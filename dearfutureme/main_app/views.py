@@ -1,7 +1,6 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-from django.views import View
-from django.urls import path
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 # Create your views here.
 
@@ -14,14 +13,26 @@ def capsules(request):
 
 def signup_view(request):
     if request.method == 'POST':
-        # Handle the signup logic here
-        pass
-    return render(request, 'signup.html')
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('home')
+    else:
+        form = UserCreationForm()
+    return render(request, 'signup.html', {'form': form})
+
 def login_view(request):
     if request.method == 'POST':
-        # Handle the login logic here
-        pass
-    return render(request, 'login.html')
+        form = AuthenticationForm(data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('home')
+    else:
+        form = AuthenticationForm()
+    return render(request, 'login.html', {'form': form})
+
 def logout_view(request):
-    # Handle the logout logic here
-    return render(request, 'logout.html')
+    logout(request)
+    return redirect('home')
