@@ -12,15 +12,18 @@ def capsules(request):
 
 
 def signup_view(request):
+    error_message = ''
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
             return redirect('home')
-    else:
-        form = UserCreationForm()
-    return render(request, 'signup.html', {'form': form})
+        else:
+            error_message = 'Opp! There was an error with your signup. Please try again.'
+    form = UserCreationForm()
+    context = {'form': form, 'error_message': error_message}
+    return render(request, 'signup.html', context)
 
 def login_view(request):
     if request.method == 'POST':
