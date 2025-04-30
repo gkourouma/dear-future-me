@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Dear Future Me{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
+
+{% block content %}
+<div class="overlay">
+   <div class="ripped-paper">
+    <div class="landing-content">
+      <h1 class="animated-text">Dear Future Me</h1>
+      <p class="tagline">"Making memories that last a lifetime."</p>
+      <div class="buttons">
+        <a href="{% url 'signup' %}" class="btn">Sign Up</a>
+        <a href="{% url 'login' %}" class="btn">Log In</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
