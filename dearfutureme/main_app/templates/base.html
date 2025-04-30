@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}Dear Future Me{% endblock %}</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Patrick+Hand&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+
+    {% block head %}{% endblock %}
+  </head>
+  <body>
+    {% if user.is_authenticated %}
+    <nav class="navbar">
+      <div class="logo">
+        <a href="{% url 'home' %}"><h1>Dear Future Me</h1></a>
+        <ul class="nav-links">
+        <li><a href="{% url 'capsule_list' %}">My Capsules</a></li>
+        <li><a href="{% url 'logout' %}">Log Out</a></li>
+        {% endif %}
+      </ul>
+    </nav>
+
+    {% block content %}{% endblock %}
+
+    <footer>
+      <div class="footer-content">
+        <p>&copy; {% now "Y" %} Dear Future Me by Gnale Kourouma. All rights reserved.</p>
+        <p>
+          Follow me on:
+          <a href="https://www.facebook.com" target="_blank">LinkedIn</a>,
+          <a href="https://www.twitter.com" target="_blank">GitHub</a>,
+          <a href="https://www.instagram.com" target="_blank">My Portfolio</a>
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>
