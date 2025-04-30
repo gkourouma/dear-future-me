@@ -10,6 +10,12 @@
   font-family: "Patrick Hand", cursive;
 }
 
+form .error-message {
+  color: #d9534f;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
 .polaroid-form {
   background: #fff;
   border: 1px solid #ccc;
