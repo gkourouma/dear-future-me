@@ -6,25 +6,25 @@
 
 html,
 body {
-  height: 100vh;
+  height: 100%;
   font-family: "Patrick Hand", cursive;
-  background: url("../media/homepagebackground.png")
-    no-repeat center center fixed;
+  background: url("../media/homepagebackground.png") no-repeat center center
+    fixed;
   background-size: cover;
 }
 
 .overlay {
   background: rgba(255, 255, 255, 0.3);
   width: 100%;
-  height: 100vh;
+  height: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
 .ripped-paper {
-  background: url("../media/rippedpaper.png") no-repeat
-    center center;
+  background: url("../media/rippedpaper.png") no-repeat center center;
   background-size: contain;
   padding: 60px 20px;
   width: 550px;
@@ -108,5 +108,60 @@ body {
 @keyframes fadeIn {
   to {
     opacity: 1;
+  }
+}
+.how-it-works {
+  text-align: center;
+  margin: 4rem auto;
+  max-width: 1000px;
+  padding: 0 2rem;
+  opacity: 0;
+  animation: fadeIn 2s ease 4.2s forwards;
+  font-family: "Patrick Hand", cursive;
+}
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.step {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.05);
+  border-left: 6px solid #d9a066;
+  transform: translateY(10px);
+  opacity: 0;
+  animation: fadeInStep 1s ease forwards;
+}
+
+.delay-1 {
+  animation-delay: 4.4s;
+}
+.delay-2 {
+  animation-delay: 4.7s;
+}
+.delay-3 {
+  animation-delay: 5s;
+}
+
+.step h3 {
+  font-size: 2rem;
+  color: #5c4033;
+  margin-bottom: 1rem;
+}
+
+.step p {
+  font-size: 1rem;
+  color: #5c4033;
+}
+
+/* Keyframes */
+@keyframes fadeInStep {
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
