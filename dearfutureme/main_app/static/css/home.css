@@ -1,0 +1,112 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100vh;
+  font-family: "Patrick Hand", cursive;
+  background: url("../media/homepagebackground.png")
+    no-repeat center center fixed;
+  background-size: cover;
+}
+
+.overlay {
+  background: rgba(255, 255, 255, 0.3);
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ripped-paper {
+  background: url("../media/rippedpaper.png") no-repeat
+    center center;
+  background-size: contain;
+  padding: 60px 20px;
+  width: 550px;
+  max-width: 800px;
+  text-align: center;
+}
+
+.landing-content {
+  text-align: center;
+  padding: 20px;
+}
+
+.animated-text {
+  font-family: "Dancing Script", cursive;
+  font-size: 4.5rem;
+  color: #5c4033;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 3px solid #5c4033;
+  width: 0;
+  animation: typing 3s steps(20, end) forwards, blink 0.75s step-end infinite;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* SOFT SHADOW */
+}
+
+/* Typing animation */
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+/* Blinking cursor effect */
+@keyframes blink {
+  from,
+  to {
+    border-color: transparent;
+  }
+  50% {
+    border-color: #5c4033;
+  }
+}
+
+.tagline {
+  font-size: 1.5rem;
+  color: #7a5c3e;
+  margin-bottom: 2rem;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.btn {
+  background-color: #d9a066;
+  color: white;
+  padding: 12px 30px;
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border-radius: 30px;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #b3742a;
+}
+
+.tagline,
+.buttons {
+  opacity: 0;
+  animation: fadeIn 2s ease 3.2s forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
