@@ -1,0 +1,68 @@
+
+body {
+  background-color: #fff8ef;
+  font-family: "Patrick Hand", cursive;
+  color: #5c4033;
+}
+
+.capsule-form-wrapper {
+  max-width: 600px;
+  margin: 4rem auto;
+  padding: 3rem 2rem;
+  background-color: #ffffff;
+  border: 3px solid #d9a066;
+  border-radius: 15px;
+  box-shadow: 4px 6px 14px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.capsule-form-wrapper h2 {
+  font-family: "Dancing Script", cursive;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: #5c4033;
+}
+
+.capsule-form-wrapper p {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  color: #7a5c3e;
+}
+
+form input[type="text"],
+form input[type="date"],
+form input[type="file"],
+form select,
+form textarea {
+  width: 100%;
+  padding: 0.8rem;
+  margin-bottom: 1.5rem;
+  border: 2px solid #d9a066;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-family: "Patrick Hand", cursive;
+  background-color: #fffdf8;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+form input[type="file"] {
+  padding: 0.5rem;
+  background-color: #fdfaf5;
+}
+
+form .btn {
+  background-color: #d9a066;
+  color: white;
+  padding: 12px 30px;
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+form .btn:hover {
+  background-color: #b3742a;
+}
