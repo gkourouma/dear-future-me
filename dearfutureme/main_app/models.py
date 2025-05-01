@@ -15,9 +15,10 @@ class Capsule(models.Model):
         return self.title
     
 class Memory(models.Model):
-    capsule = models.ForeignKey(Capsule, on_delete=models.CASCADE)
+    capsule = models.ForeignKey(Capsule, on_delete=models.CASCADE, related_name='memories')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
+    date_taken = models.DateField(null=True, blank=True)
     content = models.TextField()
     image = models.ImageField(upload_to='memory_images/', blank=True, null=True)
     video = models.FileField(upload_to='memory_videos/', blank=True, null=True)
