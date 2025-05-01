@@ -10,9 +10,19 @@
     <div class="form-photo">
       <form method="POST">
         {% csrf_token %}
-        {% if error_message %}
-            <div class="error-message">{{ error_message }}</div>
+        {% if form.errors %}
+          <ul class="form-errors">
+            {% for field in form %}
+              {% for error in field.errors %}
+                <li>{{ field.label }}: {{ error }}</li>
+              {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
         {% endif %}
+
         <h2> Sign Up</h2>
         {{ form.as_p }}
         <button type="submit" class="btn">Sign Up</button>
