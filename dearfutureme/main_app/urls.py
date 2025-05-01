@@ -10,6 +10,7 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('capsules/', views.capsule_page, name='capsules'),
     path('capsule/create/', views.capsule_create, name='capsule_create'),
+    path('capsule/<int:capsule_id>/', views.capsule_detail, name='capsule_detail'),
 ]
 
 if settings.DEBUG:
