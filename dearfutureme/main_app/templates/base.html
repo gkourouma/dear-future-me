@@ -18,11 +18,14 @@
     <nav class="navbar">
       <div class="logo">
         <a href="{% url 'home' %}"><h1>Dear Future Me</h1></a>
+      </div>
+      <div></div>
         <ul class="nav-links">
-        <li><a href="{% url 'capsule_list' %}">My Capsules</a></li>
+        <li><a href="{% url 'capsules' %}">My Capsules</a></li>
         <li><a href="{% url 'logout' %}">Log Out</a></li>
         {% endif %}
       </ul>
+      </div>
     </nav>
 
     {% block content %}{% endblock %}
