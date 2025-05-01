@@ -1,5 +1,6 @@
 from django import forms
 from .models import Capsule
+from .models import Memory
 
 
 class CapsuleForm(forms.ModelForm):
@@ -29,4 +30,26 @@ class CapsuleForm(forms.ModelForm):
             'open_date': {
                 'invalid': 'Enter a valid date.',
             },
+        }
+
+
+class MemoryForm(forms.ModelForm):
+    class Meta:
+        model = Memory
+        fields = ['title','content','date_taken', 'image', 'video', 'audio']
+        widgets = {
+            'title': forms.TextInput(attrs={'placeholder': 'Memory Title'}),
+            'content': forms.Textarea(attrs={'placeholder': 'Write about your memory here...'}),
+            'date_taken': forms.DateInput(attrs={'type': 'date', 'placeholder': 'Date Taken'}),
+            'image': forms.ClearableFileInput(attrs={'accept': 'image/*', 'placeholder': 'Upload an Image'}),
+            'video': forms.ClearableFileInput(attrs={'accept': 'video/*', 'placeholder': 'Upload a Video'}),
+            'audio': forms.ClearableFileInput(attrs={'accept': 'audio/*', 'placeholder': 'Upload Audios'}),
+        }
+        labels = {
+            'title': 'Memory Title',
+            'content': 'Your Story',
+            'date_taken': 'Date Taken',
+            'image': 'Upload Images',
+            'video': 'Upload Videos',
+            'audio': 'Upload Audios',
         }
