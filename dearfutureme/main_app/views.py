@@ -1,8 +1,10 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .forms import CapsuleForm
-from .models import Capsule
+from .models import Capsule, Memory
+from .forms import MemoryForm
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -25,6 +27,43 @@ def capsule_create(request):
         form = CapsuleForm()
     return render(request, 'capsule_form.html', {'form': form})
 
+def capsule_detail(request, capsule_id):
+    capsule = Capsule.objects.get(id=capsule_id)
+    memories = capsule.memories.all()
+    if request.method == 'POST':
+        form = MemoryForm(request.POST, request.FILES)
+        if form.is_valid():
+            memory = form.save(commit=False)
+            memory.user = request.user
+            memory.capsule = capsule
+            memory.save()
+            return redirect('capsule_detail', capsule_id=capsule.id)
+    else:
+        form = MemoryForm()
+
+    return render(request, 'capsule_detail.html', {
+        'capsule': capsule,
+        'memories': memories,
+        'form': form})
+
+
+def add_memory(request, capsule_id):
+    capsule = get_object_or_404(Capsule, id=capsule_id, user=request.user)
+    if request.method == 'POST':
+        form = MemoryForm(request.POST, request.FILES)
+        if form.is_valid():
+            memory = form.save(commit=False)
+            memory.user = request.user
+            memory.capsule = capsule
+            memory.save()
+            return redirect('capsule_detail', capsule_id=capsule.id)
+    else:
+        form = MemoryForm()
+    return render(request, 'memory_form.html', {'form': form, 'capsule': capsule})
+
+def memory_detail(request, memory_id):
+    memory = get_object_or_404(Memory, id=memory_id, user=request.user)
+    return render(request, 'memory_detail.html', {'memory': memory})
 
 def signup_view(request):
     error_message = ''
