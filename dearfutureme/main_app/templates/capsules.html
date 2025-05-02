@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/capsules.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="capsule-page">
+  <h1 class="capsule-title">My Capsules</h1>
+  <div class="header">
+    <!-- <p class="description">Create and manage your memory capsules.</p> -->
+    <a href="{% url 'capsule_create' %}" class="btn">Create New Capsule</a>
+  </div>
+
+  <div class="capsule-grid">
+    {% for capsule in capsules %}
+      <div class="capsule-card {% if capsule.is_locked %}locked{% endif %}">
+        <div class="polaroid-frame">
+          {% if capsule.cover_image %}
+            <img src="{{ capsule.cover_image.url }}" alt="{{ capsule.title }}">
+          {% else %}
+            <img src="{% static 'media/blankpolaroid.png' %}" alt="Blank Polaroid">
+          {% endif %}
+        </div>
+
+        <div class="card-content">
+          <h3>{{ capsule.title }}</h3>
+          <p class="open-date">Open Date: {{ capsule.open_date }}</p>
+          
+          {% if capsule.is_locked %}
+            <span class="lock-icon">🔒 Locked</span>
+          {% endif %}
+
+          <a href="{% url 'capsule_detail' capsule.id %}" class="btn">
+            {% if capsule.is_locked %}
+              View Capsule
+            {% else %}
+              Open Capsule
+            {% endif %}
+          </a>          
+        </div>
+      </div>
+    {% empty %}
+      <p>No capsules yet. <a href="{% url 'capsule_create' %}">Create your first one</a> </p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
