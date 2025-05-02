@@ -10,9 +10,13 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('capsules/', views.capsule_page, name='capsules'),
     path('capsule/create/', views.capsule_create, name='capsule_create'),
+    path('capsule/<int:capsule_id>/delete/', views.capsule_delete, name='capsule_delete'),
+    path('capsule/<int:capsule_id>/edit/', views.capsule_edit, name='capsule_edit'),
     path('capsule/<int:capsule_id>/', views.capsule_detail, name='capsule_detail'),
     path('capsules/<int:capsule_id>/add-memory/', views.add_memory, name='memory_form'),
     path('memories/<int:memory_id>/', views.memory_detail, name='memory_detail'),
+    path('memories/<int:memory_id>/delete/', views.memory_delete, name='memory_delete'),
+    path('memories/<int:memory_id>/edit/', views.memory_edit, name='memory_edit'),
 ]
 
 if settings.DEBUG:
