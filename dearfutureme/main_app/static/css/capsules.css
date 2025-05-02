@@ -1,0 +1,102 @@
+/* ===== Capsule List Page ===== */
+body {
+  background-color: #fff8ef;
+  font-family: "Patrick Hand", cursive;
+  color: #5c4033;
+}
+
+.capsule-page {
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.capsule-title {
+  font-family: "Dancing Script", cursive;
+  font-size: 3rem;
+  margin-bottom: 2rem;
+  color: #5c4033;
+}
+
+.header .btn{
+    margin-bottom: 2rem;
+}
+/* ===== Capsule Grid ===== */
+.capsule-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+/* ===== Individual Capsule Card ===== */
+.capsule-card {
+  background-color: #fffdf8;
+  border: 1px solid #e0d5c1;
+  border-radius: 12px;
+  box-shadow: 4px 6px 14px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  transition: transform 0.3s;
+  position: relative;
+  text-align: center;
+}
+
+.capsule-card:hover {
+  transform: scale(1.03) rotate(1deg);
+}
+
+/* ===== Polaroid Frame ===== */
+  
+.capsule-card img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border: 8px solid white;
+  border-bottom: 60px solid white;
+  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+/* ===== Capsule Info ===== */
+.card-content h3 {
+  font-size: 1.4rem;
+  margin: 0.5rem 0;
+  color: #5c4033;
+}
+
+.open-date {
+  font-size: 0.95rem;
+  color: #7a5c3e;
+  margin-bottom: 0.5rem;
+}
+
+.lock-icon {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  color: #c05c35;
+}
+
+/* ===== Button ===== */
+.btn {
+  display: inline-block;
+  background-color: #d9a066;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #b3742a;
+}
+
+/* ===== Locked Style (optional dimming) ===== */
+.locked {
+  opacity: 0.85;
+  filter: grayscale(10%);
+}
