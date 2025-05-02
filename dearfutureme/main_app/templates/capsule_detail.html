@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/capsule_detail.css' %}">
+{% endblock %}
+
+{% block content %}
+<main>
+    <div class="header">
+        <h1 class="animated-text">{{ capsule.title }}</h1>
+        <p class="description">Memories from {{ capsule.title }}!</p>
+        <p class="open-date">Open Date: {{ capsule.open_date|date:"F j, Y" }}</p>
+    
+        <a href="{% url 'memory_form' capsule.id %}" class="btn">Add Memory</a>
+        <a href="{% url 'capsule_edit' capsule.id %}" class="btn">Edit Capsule</a>
+        <button class="btn delete-btn" onclick="openModal({{ capsule.id }})">Delete Capsule</button>
+      </div>
+    
+      <div id="modal-{{ capsule.id }}" class="modal hidden">
+        <div class="modal-content">
+          <h3>Delete Capsule?</h3>
+          <p>Are you sure you want to delete "<strong>{{ capsule.title }}</strong>"?</p>
+          
+          <form method="POST" action="{% url 'capsule_delete' capsule.id %}">
+            {% csrf_token %}
+            <button type="submit" class="btn danger">Yes, delete it</button>
+            <button type="button" class="btn cancel" onclick="closeModal({{ capsule.id }})">Cancel</button>
+          </form>
+        </div>
+      </div>
+  
+    <div class="wrapper">
+        {% for memory in memories %}
+        <div class="item item-{{ forloop.counter }}">
+            <a href ="{% url 'memory_detail' memory.id %}">
+                <div class="polaroid">
+        
+                {% if memory.image %}
+                    <img src="{{ memory.image.url }}" alt="{{ memory.caption }}">
+                {% elif memory.video %}
+                    <video src="{{ memory.video.url }}" autoplay loop muted></video>
+                {% elif memory.audio %}
+                    <audio controls>
+                    <source src="{{ memory.audio.url }}">
+                    Your browser does not support the audio element.
+                    </audio>
+                {% else %}
+                    <img src="{% static 'media/blankpolaroid.png' %}" alt="Blank Memory">
+                {% endif %}
+        
+                <div class="caption">{{ memory.title }}</div>
+                <p>Date: {{ memory.created_at|date:"F j, Y" }}</p>
+                </div>
+            </a>
+        </div>
+        {% empty %}
+        <p>No memories yet. Start by adding your first one!</p>
+        {% endfor %}
+    </div>
+  
+    <div class="back-button">
+        <a href="{% url 'capsules' %}" class="btn">Back to Capsules</a>
+    </div>
+</main>
+
+<script>
+function openModal(id) {
+    console.log('Opening modal for capsule ID:', id);
+    document.getElementById(`modal-${id}`).classList.remove('hidden');
+}
+
+function closeModal(id) {
+    console.log('Closing modal for capsule ID:', id);
+    document.getElementById(`modal-${id}`).classList.add('hidden');
+}
+</script>
+{% endblock %}
