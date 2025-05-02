@@ -27,6 +27,24 @@ def capsule_create(request):
         form = CapsuleForm()
     return render(request, 'capsule_form.html', {'form': form})
 
+def capsule_edit(request, capsule_id):
+    capsule = get_object_or_404(Capsule, id=capsule_id, user=request.user)
+    if request.method == 'POST':
+        form = CapsuleForm(request.POST, request.FILES, instance=capsule)
+        if form.is_valid():
+            form.save()
+            return redirect('capsule_detail', capsule_id=capsule.id)
+    else:
+        form = CapsuleForm(instance=capsule)
+    return render(request, 'capsule_form.html', {'form': form, 'capsule': capsule})
+
+def capsule_delete(request, capsule_id):
+    capsule = get_object_or_404(Capsule, id=capsule_id, user=request.user)
+    if request.method == 'POST':
+        capsule.delete()
+        return redirect('capsules')
+    return render(request, 'capsule_delete.html', {'capsule': capsule})
+
 def capsule_detail(request, capsule_id):
     capsule = Capsule.objects.get(id=capsule_id)
     memories = capsule.memories.all()
@@ -64,6 +82,24 @@ def add_memory(request, capsule_id):
 def memory_detail(request, memory_id):
     memory = get_object_or_404(Memory, id=memory_id, user=request.user)
     return render(request, 'memory_detail.html', {'memory': memory})
+
+def memory_delete(request, memory_id):
+    memory = get_object_or_404(Memory, id=memory_id, user=request.user)
+    if request.method == 'POST':
+        memory.delete()
+        return redirect('capsule_detail', capsule_id=memory.capsule.id)
+    return render(request, 'memory_delete.html', {'memory': memory})
+
+def memory_edit(request, memory_id):
+    memory = get_object_or_404(Memory, id=memory_id, user=request.user)
+    if request.method == 'POST':
+        form = MemoryForm(request.POST, request.FILES, instance=memory)
+        if form.is_valid():
+            form.save()
+            return redirect('memory_detail', memory_id=memory.id)
+    else:
+        form = MemoryForm(instance=memory)
+    return render(request, 'memory_form.html', {'form': form, 'memory': memory, 'capsule': memory.capsule})
 
 def signup_view(request):
     error_message = ''
