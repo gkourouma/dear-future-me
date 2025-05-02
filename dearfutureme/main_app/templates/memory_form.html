@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/form.css' %}">
+{% endblock %}
+
+{% block content %}
+<main>
+<div class="form-container">
+  <h1>Add a Memory to "{{ capsule.title }}"</h1>
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn">Save Memory</button>
+    <a href="{% url 'capsule_detail' capsule.id %}" class="btn cancel">Cancel</a>
+  </form>
+</div>
+</main>
+{% endblock %}
