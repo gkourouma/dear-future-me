@@ -6,11 +6,20 @@
   padding: 0;
 }
 
-body {
+html, body {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 0;
   font-family: "Patrick Hand", cursive;
   background-color: #fdfaf6;
   color: #5c4033;
   /* line-height: 1.6; */
+}
+
+main{
+  flex: 1;
 }
 
 a {
