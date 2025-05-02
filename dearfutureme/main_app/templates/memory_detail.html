@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/memory_detail.css' %}">
+{% endblock %}
+
+{% block content %}
+<main>
+    <section class="overlay">
+    <div class="memory-detail">
+    <h1>{{ memory.title }}</h1>
+    <p class="date">Memory Date: {{ memory.date_taken|date:"F j, Y" }}</p>
+
+    {% if memory.image %}
+        <img src="{{ memory.image.url }}" alt="{{ memory.title }}">
+    {% elif memory.video %}
+        <video src="{{ memory.video.url }}" controls></video>
+    {% elif memory.audio %}
+        <audio controls>
+        <source src="{{ memory.audio.url }}">
+        </audio>
+    {% endif %}
+
+    <p class="caption">{{ memory.content }}</p>
+
+    <a href="{% url 'capsule_detail' memory.capsule.id %}" class="btn">Back to Capsule</a>
+    <a href="{% url 'memory_edit' memory.id %}" class="btn">Edit Memory</a>
+    <button class="btn delete-btn" onclick="openModal({{ memory.id }})"> Delete Memory</button>
+
+    <div id="modal-{{ memory.id }}" class="modal hidden">
+        <div class="modal-content">
+        <h3>Delete Memory?</h3>
+        <p>Are you sure you want to delete "<strong>{{ memory.title }}</strong>"?</p>
+        
+        <form method="POST" action="{% url 'memory_delete' memory.id %}">
+            {% csrf_token %}
+            <button type="submit" class="btn danger">Yes, delete it</button>
+            <button type="button" class="btn cancel" onclick="closeModal({{ memory.id }})">Cancel</button>
+        </form>
+        </div>
+    </div>
+    </div>
+    </section>
+    <script>
+        function openModal(id) {
+        document.getElementById(`modal-${id}`).classList.remove('hidden');
+        }
+    
+        function closeModal(id) {
+        document.getElementById(`modal-${id}`).classList.add('hidden');
+        }
+    </script>
+</main>
+{% endblock %}
