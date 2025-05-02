@@ -1,0 +1,136 @@
+/* Global Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  font-family: "Patrick Hand", cursive;
+  background: url("../media/homepagebackground.png") no-repeat center center
+    fixed;
+  background-size: cover;
+  height: 100%;
+  color: #5c4033;
+}
+
+.overlay {
+  background: rgba(255, 255, 255, 0.3);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Memory Container */
+.memory-detail {
+  max-width: 800px;
+  margin: 2rem auto;
+  background: rgba(255, 255, 255, 0.85);
+  /* border-radius: 10px; */
+  box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.545);
+  padding: 2rem;
+  text-align: center;
+}
+
+/* Title */
+.memory-detail h1 {
+  font-family: "Dancing Script", cursive;
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: #5c4033;
+}
+
+/* Date Text */
+.memory-detail .date {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  font-style: italic;
+  color: #7a5c3e;
+}
+
+/* Media Styling */
+.memory-detail img,
+.memory-detail video {
+  width: 100%;
+  max-width: 100%;
+  height: 580px;
+  object-fit: cover;
+  /* border-radius: 8px; */
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.memory-detail audio {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+/* Caption / Story */
+.memory-detail .caption {
+  font-size: 1.3rem;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+  color: #4a3326;
+}
+
+/* Back Button */
+.memory-detail .btn {
+  background-color: #d9a066;
+  color: white;
+  text-decoration: none;
+  padding: 0.75rem 2rem;
+  font-size: 1.1rem;
+  border-radius: 25px;
+  transition: background-color 0.3s ease;
+}
+
+.memory-detail .btn:hover {
+  background-color: #b3742a;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-content {
+  background: #fffdf4;
+  padding: 2rem;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 2px 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.hidden {
+  display: none;
+}
+
+.btn {
+  margin: 0.5rem;
+  padding: 0.5rem 1.2rem;
+  font-weight: bold;
+  border-radius: 25px;
+  border: none;
+  cursor: pointer;
+}
+
+.btn.danger {
+  background-color: #e94e3c;
+  color: white;
+}
+
+.btn.cancel {
+  background-color: #ccc;
+}
