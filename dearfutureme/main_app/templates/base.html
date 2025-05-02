@@ -11,7 +11,7 @@
     />
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
 
-    {% block head %}{% endblock %}
+    {% block head %}<main></main>{% endblock %}
   </head>
   <body>
     {% if user.is_authenticated %}
