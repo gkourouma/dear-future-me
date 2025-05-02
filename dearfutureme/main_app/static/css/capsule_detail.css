@@ -1,0 +1,251 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Patrick Hand", cursive;
+  background-color: #fff8ef;
+}
+
+/* Navbar */
+.navbar {
+  /* background: rgba(255, 255, 255, 0.3); */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  text-align: center;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+}
+
+.nav-links li {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+  text-decoration: none;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #5c4033;
+  font-size: 1.2rem;
+  font-weight: bold;
+  list-style: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  background-color: #d9a066;
+  transition: background-color 0.3s ease;
+}
+
+/* Header */
+.header {
+  padding: 2rem;
+  text-align: center;
+}
+.header h1 {
+  font-family: "Dancing Script", cursive;
+  font-size: 4.5rem;
+  color: #5c4033;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+.header p {
+  font-size: 1.3rem;
+  color: #5c4033;
+}
+
+/* Add Memory Button */
+.add-memory-button {
+  background-color: #d9a066;
+  color: white;
+  font-weight: bold;
+  padding: 12px 24px;
+  border-radius: 30px;
+  text-decoration: none;
+  margin-top: 1rem;
+  display: inline-block;
+  transition: background-color 0.3s ease;
+}
+.add-memory-button:hover {
+  background-color: #b3742a;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-content {
+  background: #fffdf4;
+  padding: 2rem;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 2px 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.hidden {
+  display: none;
+}
+
+.btn {
+  margin: 0.5rem;
+  padding: 0.5rem 1.2rem;
+  font-weight: bold;
+  border-radius: 25px;
+  border: none;
+  cursor: pointer;
+}
+
+.btn.danger {
+  background-color: #e94e3c;
+  color: white;
+}
+
+.btn.cancel {
+  background-color: #ccc;
+}
+
+/* MEMORY GRID FIX: WRAPPER IS NOW RELATIVE */
+/* 📦 Memory Grid Layout */
+.wrapper {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 per row */
+  gap: 120px;
+  max-width: 1200px;
+  margin: 3rem auto;
+  padding: 1rem;
+  position: relative;
+}
+
+/* 🎞 Each Polaroid Item */
+.item {
+  opacity: 0;
+  animation: dropIn 0.6s ease-out forwards;
+  position: relative;
+  padding: 10px;
+  transition: transform 0.3s ease, z-index 0.3s;
+}
+
+@keyframes dropIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.item:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.item:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.item:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.item:nth-child(4) {
+  animation-delay: 0.4s;
+}
+.item:nth-child(5) {
+  animation-delay: 0.5s;
+}
+.item:nth-child(6) {
+  animation-delay: 0.6s;
+}
+.item:nth-child(7) {
+  animation-delay: 0.7s;
+}
+.item:nth-child(8) {
+  animation-delay: 0.8s;
+}
+
+/* 🎯 Scrapbook Rotation + Stacking */
+.item:nth-child(4n + 1) .polaroid {
+  transform: rotate(3deg) translate(-8px, -5px);
+  z-index: 1;
+}
+.item:nth-child(4n + 2) .polaroid {
+  transform: rotate(-4deg) translate(10px, 5px);
+  z-index: 2;
+}
+.item:nth-child(4n + 3) .polaroid {
+  transform: rotate(2deg) translate(-6px, 8px);
+  z-index: 3;
+}
+.item:nth-child(4n + 4) .polaroid {
+  transform: rotate(-2deg) translate(4px, -3px);
+  z-index: 1;
+}
+
+/* 🖼 Polaroid Card Style */
+.polaroid {
+  background: #fff;
+  padding: 1rem;
+  width: 170%;
+  height: 120%;
+  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.929);
+  transition: transform 0.3s, box-shadow 0.3s;
+  text-align: center;
+}
+
+.polaroid img,
+.polaroid video {
+  filter: brightness(1.05) contrast(0.9) saturate(0.85);
+  width: 100%;
+  max-width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+
+/* ✍️ Caption Text */
+.caption {
+  font-size: 1.3rem;
+  margin-top: 10px;
+  color: #5c4033;
+}
+
+/* ✨ Hover Effect */
+.item:hover {
+  z-index: 10;
+}
+
+.item:hover .polaroid {
+  transform: scale(1.05) rotate(0deg) translate(0, 0);
+  box-shadow: 5px 10px 50px black;
+}
+
+.hidden {
+  display: none;
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
