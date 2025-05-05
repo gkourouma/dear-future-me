@@ -4,164 +4,191 @@
   box-sizing: border-box;
 }
 
-html,
-body {
-  height: 100%;
-  font-family: "Patrick Hand", cursive;
-  background: url("../media/homepagebackground.png") no-repeat center center
-    fixed;
-  background-size: cover;
-}
 
-.overlay {
-  background: rgba(255, 255, 255, 0.3);
-  width: 100%;
-  height: 100%;
+/* Hero section */
+.hero {
+  background: url("../media/Beige White Aesthetic Feminine Scrapbook Photo Collage Facebook Post.png") center/cover no-repeat;
+  height: 100vh;
+  gap: 2rem;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
-}
-
-.ripped-paper {
-  background: url("../media/rippedpaper.png") no-repeat center center;
-  background-size: contain;
-  padding: 60px 20px;
-  width: 550px;
-  max-width: 800px;
+  justify-content: center;
   text-align: center;
+  color: white;
+  padding: 2rem;
+  position: relative;
 }
 
-.landing-content {
-  text-align: center;
-  padding: 20px;
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
 }
 
-.animated-text {
+.hero-content {
+  position: relative;
+  z-index: 1;
+}
+
+.hero h1 {
   font-family: "Dancing Script", cursive;
-  font-size: 4.5rem;
-  color: #5c4033;
-  white-space: nowrap;
-  overflow: hidden;
-  border-right: 3px solid #5c4033;
-  width: 0;
-  animation: typing 3s steps(20, end) forwards, blink 0.75s step-end infinite;
-  margin-bottom: 1rem;
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* SOFT SHADOW */
-}
-
-/* Typing animation */
-@keyframes typing {
-  from {
-    width: 0;
-  }
-  to {
-    width: 100%;
-  }
-}
-
-/* Blinking cursor effect */
-@keyframes blink {
-  from,
-  to {
-    border-color: transparent;
-  }
-  50% {
-    border-color: #5c4033;
-  }
+  text-shadow: black 2px 2px 5px;
+  font-size: 4rem;
+  margin-bottom: 0.5rem;
+  margin-top: 5rem;
 }
 
 .tagline {
-  font-size: 1.5rem;
-  color: #7a5c3e;
-  margin-bottom: 2rem;
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-.buttons {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-}
-
-.btn {
-  background-color: #d9a066;
-  color: white;
-  padding: 12px 30px;
-  text-decoration: none;
-  font-size: 1.1rem;
-  font-weight: bold;
-  border-radius: 30px;
-  transition: background-color 0.3s ease;
-}
-
-.btn:hover {
-  background-color: #b3742a;
-}
-
-.tagline,
-.buttons {
-  opacity: 0;
-  animation: fadeIn 2s ease 3.2s forwards;
-}
-
-@keyframes fadeIn {
-  to {
-    opacity: 1;
-  }
-}
-.how-it-works {
-  text-align: center;
-  margin: 4rem auto;
-  max-width: 1000px;
-  padding: 0 2rem;
-  opacity: 0;
-  animation: fadeIn 2s ease 4.2s forwards;
   font-family: "Patrick Hand", cursive;
+  font-size: 1.4rem;
+  margin-bottom: 1.5rem;
 }
 
-.steps-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  margin-bottom: 2rem;
+}
+
+.hero-buttons .btn {
+  padding: 0.75rem 1.5rem;
+  margin: 0 0.5rem;
+  border-radius: 25px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+  background-color: #f3af67;
+  color: white;
+  transition: background 0.3s;
+}
+
+.hero-buttons .btn:hover {
+  background-color: #e4944e;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 2px solid #f3af67;
+  color: #f3af67;
+}
+
+.btn-outline:hover {
+  background: #f3af67;
+  color: white;
+}
+
+.secondheader {
+  font-family: "Dancing Script", cursive;
+  font-size: 2.5rem;
+  color: #3c2f2f;
+  margin-top: 3rem;
+  text-align: center;
+}
+
+.features {
+  display: flex;
+  justify-content: center;
   gap: 2rem;
-}
-
-.step {
-  background-color: #fff;
+  flex-wrap: wrap;
+  margin-top: 3rem;
   padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.05);
-  border-left: 6px solid #d9a066;
-  transform: translateY(10px);
-  opacity: 0;
-  animation: fadeInStep 1s ease forwards;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(6px);
+  background: none;
 }
 
-.delay-1 {
-  animation-delay: 4.4s;
-}
-.delay-2 {
-  animation-delay: 4.7s;
-}
-.delay-3 {
-  animation-delay: 5s;
-}
-
-.step h3 {
-  font-size: 2rem;
-  color: #5c4033;
-  margin-bottom: 1rem;
+.feature {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(6px);
+  color: #3c2f2f;
+  border-radius: 16px;
+  padding: 1.5rem;
+  max-width: 280px;
+  max-height: 20%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  transition: transform 0.3s ease;
 }
 
-.step p {
+.feature:hover {
+  transform: translateY(-5px);
+}
+
+.icon{
+  color: #f3af67;
+}
+
+.secondheaders{
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.sub-section {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(6px);
+  color: #3c2f2f;
+  border-radius: 16px;
+  padding: 1.5rem;
+  max-width: 60rem;
+  max-height: auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.sub-section img{
+  border-radius: 16px;
+}
+
+.description {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-family: "Playfair Display", serif;
   font-size: 1rem;
-  color: #5c4033;
+  margin-top: 1rem;
+  line-height: 1.5rem;
 }
 
-/* Keyframes */
-@keyframes fadeInStep {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.description .btn{
+  width: 50%;
+  margin: 1rem 8rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 25px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+  background-color: #f3af67;
+  color: white;
+  transition: background 0.3s;
+}
+
+.description .btn:hover {
+  background-color: #e4944e;
+}
+
+
+
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 1rem;
+  background: #fefaf6;
+  font-size: 0.875rem;
+  color: #555;
+}
+
+footer a {
+  color: #6e4227;
+  text-decoration: none;
+  margin: 0 0.5rem;
 }
