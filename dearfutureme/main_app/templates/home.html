@@ -1,47 +1,78 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Dear Future Me{% endblock %}
+{% block title %}Memory Lane{% endblock %}
 
 {% block head %}
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
   <link rel="stylesheet" href="{% static 'css/home.css' %}">
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
 {% endblock %}
 
 
 {% block content %}
 
-<section class="overlay">
-  <div class="ripped-paper">
-    <div class="landing-content">
-      <h1 class="animated-text">Dear Future Me</h1>
-      <p class="tagline">"Making memories that last a lifetime."</p>
-      <div class="buttons">
-        <a href="{% url 'signup' %}" class="btn">Sign Up</a>
-        <a href="{% url 'login' %}" class="btn">Log In</a>
-      </div>
+<section class="hero">
+  <div class="hero-content">
+    <h1>Memory Lane</h1>
+    <p class="tagline">Capture memories. Preserve moments. Reflect later.</p>
+    <div class="hero-buttons">
+      <a href="{% url 'signup' %}" class="btn">Sign Up</a>
+      <a href="{% url 'login' %}" class="btn btn-outline">Log In</a>
     </div>
   </div>
-  <section class="how-it-works">
-    <div class="steps-grid">
-      
-      <div class="step delay-1">
-        <h3><br>Capture a Memory</h3>
-        <p>Add photos, videos, or notes that matter. Make it personal, make it yours.</p>
-      </div>
-      
-      <div class="step delay-2">
-        <h3><br>Lock It Away</h3>
-        <p>Seal your capsule with a date in mind. It stays hidden until the right moment.</p>
-      </div>
-      
-      <div class="step delay-3">
-        <h3><br>Open When Ready</h3>
-        <p>When the time comes, open your capsule and rediscover the past you left behind.</p>
-      </div>
-  
-    </div>
-  </section>
-  
 </section>
+
+<div class="secondheader">
+  <h1>How It Works</h1>
+  <p class="tagline">A simple way to capture and cherish your memories.</p>
+</div>
+
+<section class="features">
+  <div class="feature" data-aos="fade-up" data-aos-delay="100">
+    <img class="icon" src="{% static './media/camera.png' %}" alt="Camera" width="50" height="50" />
+    <h2>Capture a Memory</h2>
+    <p>Add photos, videos, or notes that matter. Make it personal, make it yours.</p>
+  </div>
+  <div class="feature" data-aos="fade-up" data-aos-delay="200">
+    <img class="icon" src="{% static './media/heart-lock.png' %}" alt="Heart Lock" width="50" height="50" />
+    <h2>Lock It Away</h2>
+    <p>Seal your capsule with a date in mind. It stays hidden until the right moment.</p>
+  </div>
+  <div class="feature" data-aos="fade-up" data-aos-delay="300">
+    <img class="icon" src="{% static './media/journal.png' %}" alt="Journal" width="50" height="50" />
+    <h2>Open When Ready</h2>
+    <p>When the time comes, open your capsule and rediscover the past you left behind.</p>
+  </div>
+</section>
+
+<section class="secondheaders">
+  <div class="secondheader" data-aos="fade-up" data-aos-delay="400">
+    <h1>Why Memory Lane?</h1>
+    <p class="tagline">A unique way to reflect on your journey.</p>
+    <div class="sub-section">
+      <img class="" src="{% static './media/pexels-cottonbro-6565246.jpg' %}" alt="Heart" width="500" height="500" />
+      <p class="description">
+        In a world where everything is instant, Memory Lane offers a moment of pause. It's not just
+        about capturing memories; it's about cherishing them. With our app, you can create a time capsule
+        of your life, filled with photos, videos, and notes that matter to you. Each capsule is a
+        reflection of a moment in time, waiting to be unlocked when you're ready to relive it.
+         <br />
+         <br />
+         <br />
+        Ready to start your journey? <br />
+        Join us and create your first memory capsule today! <br />
+        <a href="{% url 'signup' %}" class="btn">Get Started</a>
+        
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>
+  AOS.init();
+</script>
 
 {% endblock %}
