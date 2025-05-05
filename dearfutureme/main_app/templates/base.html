@@ -3,40 +3,37 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>{% block title %}Dear Future Me{% endblock %}</title>
+    <title>{% block title %}Memory Lane{% endblock %}</title>
 
     <link
-      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Patrick+Hand&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Patrick+Hand&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}" />
 
-    {% block head %}<main></main>{% endblock %}
+    {% block head %}{% endblock %}
   </head>
   <body>
     {% if user.is_authenticated %}
     <nav class="navbar">
       <div class="logo">
-        <a href="{% url 'home' %}"><h1>Dear Future Me</h1></a>
+        <a href="{% url 'home' %}"><h1>Memory Lane</h1></a>
       </div>
-      <div></div>
-        <ul class="nav-links">
-        <li><a href="{% url 'capsules' %}">My Capsules</a></li>
+      <ul class="nav-links">
+        <li><a href="{% url 'home' %}">Home</a></li>
+        <li><a href="{% url 'capsules' %}">My Albums</a></li>
         <li><a href="{% url 'logout' %}">Log Out</a></li>
-        {% endif %}
       </ul>
-      </div>
     </nav>
-
-    {% block content %}{% endblock %}
-
+    {% endif %}
+    <main>{% block content %}{% endblock %}</main>
     <footer>
       <div class="footer-content">
-        <p>&copy; {% now "Y" %} Dear Future Me by Gnale Kourouma. All rights reserved.
-        
-          Follow me on:
-          <a href="https://www.facebook.com" target="_blank">LinkedIn</a>,
-          <a href="https://www.twitter.com" target="_blank">GitHub</a>,
+        <p>
+          &copy; {% now "Y" %} Memory Lane by Gnale Kourouma. All rights
+          reserved. Follow me on:
+          <a href="https://www.linkedin.com/in/gnalekourouma/" target="_blank">LinkedIn</a>,
+          <a href="https://github.com/gkourouma" target="_blank">GitHub</a>,
           <a href="https://www.instagram.com" target="_blank">My Portfolio</a>
         </p>
       </div>
