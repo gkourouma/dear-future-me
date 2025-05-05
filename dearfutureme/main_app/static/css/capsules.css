@@ -1,64 +1,58 @@
-/* ===== Capsule List Page ===== */
-body {
-  background-color: #fff8ef;
-  font-family: "Patrick Hand", cursive;
-  color: #5c4033;
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem;
+
+}
+
+.header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  color: #2d2d2d;
 }
 
 .capsule-page {
-  padding: 4rem 2rem;
+  padding: 0 2rem 2rem;
   text-align: center;
 }
 
-.capsule-title {
-  font-family: "Dancing Script", cursive;
-  font-size: 3rem;
-  margin-bottom: 2rem;
-  color: #5c4033;
+.header .btn{
+  background-color: #f3af67;
+  color: #fff;
+  padding: 0.75rem 1.25rem;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: background-color 0.3s;
 }
 
-.header .btn{
-    margin-bottom: 2rem;
-}
-/* ===== Capsule Grid ===== */
 .capsule-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
-  max-width: 100%;
-  margin: 0 auto;
+  padding: 0 2rem 2rem;
 }
 
-/* ===== Individual Capsule Card ===== */
 .capsule-card {
-  background-color: #fffdf8;
-  border: 1px solid #e0d5c1;
+  background: #fff;
   border-radius: 12px;
-  box-shadow: 4px 6px 14px rgba(0, 0, 0, 0.1);
-  padding: 1rem;
-  transition: transform 0.3s;
-  position: relative;
-  text-align: center;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .capsule-card:hover {
   transform: scale(1.03) rotate(1deg);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
 }
-
-/* ===== Polaroid Frame ===== */
   
 .capsule-card img {
   width: 100%;
-  height: auto;
+  height: 75%;
   object-fit: cover;
-  border: 8px solid white;
-  border-bottom: 60px solid white;
-  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  margin-bottom: 1rem;
 }
 
-/* ===== Capsule Info ===== */
 .card-content h3 {
   font-size: 1.4rem;
   margin: 0.5rem 0;
@@ -78,24 +72,21 @@ body {
   color: #c05c35;
 }
 
-/* ===== Button ===== */
 .btn {
   display: inline-block;
-  background-color: #d9a066;
+  background-color: #f3af67;
   color: white;
-  padding: 10px 20px;
-  border-radius: 30px;
+  padding: 0.6rem 1rem;
+  margin-bottom: 1rem;
+  border-radius: 5px;
   text-decoration: none;
-  font-weight: bold;
-  font-size: 1rem;
-  transition: background-color 0.3s ease;
+  font-weight: 500;
 }
 
 .btn:hover {
-  background-color: #b3742a;
+  background-color: #e09e5c;
 }
 
-/* ===== Locked Style (optional dimming) ===== */
 .locked {
   opacity: 0.85;
   filter: grayscale(10%);
