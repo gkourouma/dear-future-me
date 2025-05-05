@@ -1,42 +1,12 @@
-/* Global Reset */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html,
-body {
-  font-family: "Patrick Hand", cursive;
-  background: url("../media/homepagebackground.png") no-repeat center center
-    fixed;
-  background-size: cover;
-  height: 100%;
-  color: #5c4033;
-}
-
-.overlay {
-  background: rgba(255, 255, 255, 0.3);
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-/* Memory Container */
 .memory-detail {
   max-width: 800px;
   margin: 2rem auto;
   background: rgba(255, 255, 255, 0.85);
-  /* border-radius: 10px; */
   box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.545);
   padding: 2rem;
   text-align: center;
 }
 
-/* Title */
 .memory-detail h1 {
   font-family: "Dancing Script", cursive;
   font-size: 3rem;
@@ -44,7 +14,6 @@ body {
   color: #5c4033;
 }
 
-/* Date Text */
 .memory-detail .date {
   font-size: 1.2rem;
   margin-bottom: 1.5rem;
@@ -52,14 +21,12 @@ body {
   color: #7a5c3e;
 }
 
-/* Media Styling */
 .memory-detail img,
 .memory-detail video {
   width: 100%;
   max-width: 100%;
-  height: 580px;
+  height: 620px;
   object-fit: cover;
-  /* border-radius: 8px; */
   margin-bottom: 1rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
@@ -69,7 +36,6 @@ body {
   margin-bottom: 1rem;
 }
 
-/* Caption / Story */
 .memory-detail .caption {
   font-size: 1.3rem;
   line-height: 1.7;
@@ -77,7 +43,6 @@ body {
   color: #4a3326;
 }
 
-/* Back Button */
 .memory-detail .btn {
   background-color: #d9a066;
   color: white;
