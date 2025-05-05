@@ -1,50 +1,3 @@
-* {
-  box-sizing: border-box;
-}
-
-html,
-body {
-  margin: 0;
-  padding: 0;
-  font-family: "Patrick Hand", cursive;
-  background-color: #fff8ef;
-}
-
-/* Navbar */
-.navbar {
-  /* background: rgba(255, 255, 255, 0.3); */
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem;
-  text-align: center;
-}
-
-.nav-links {
-  display: flex;
-  gap: 2rem;
-}
-
-.nav-links li {
-  display: flex;
-  gap: 2rem;
-  list-style: none;
-  text-decoration: none;
-}
-
-.nav-links a {
-  text-decoration: none;
-  color: #5c4033;
-  font-size: 1.2rem;
-  font-weight: bold;
-  list-style: none;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
-  background-color: #d9a066;
-  transition: background-color 0.3s ease;
-}
-
-/* Header */
 .header {
   padding: 2rem;
   text-align: center;
@@ -60,7 +13,6 @@ body {
   color: #5c4033;
 }
 
-/* Add Memory Button */
 .add-memory-button {
   background-color: #d9a066;
   color: white;
@@ -119,11 +71,9 @@ body {
   background-color: #ccc;
 }
 
-/* MEMORY GRID FIX: WRAPPER IS NOW RELATIVE */
-/* 📦 Memory Grid Layout */
 .wrapper {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 4 per row */
+  grid-template-columns: repeat(4, 1fr);
   gap: 120px;
   max-width: 1200px;
   margin: 3rem auto;
@@ -131,7 +81,6 @@ body {
   position: relative;
 }
 
-/* 🎞 Each Polaroid Item */
 .item {
   opacity: 0;
   animation: dropIn 0.6s ease-out forwards;
@@ -176,7 +125,6 @@ body {
   animation-delay: 0.8s;
 }
 
-/* 🎯 Scrapbook Rotation + Stacking */
 .item:nth-child(4n + 1) .polaroid {
   transform: rotate(3deg) translate(-8px, -5px);
   z-index: 1;
@@ -194,7 +142,6 @@ body {
   z-index: 1;
 }
 
-/* 🖼 Polaroid Card Style */
 .polaroid {
   background: #fff;
   padding: 1rem;
@@ -210,18 +157,16 @@ body {
   filter: brightness(1.05) contrast(0.9) saturate(0.85);
   width: 100%;
   max-width: 100%;
-  height: 250px;
+  height: 280px;
   object-fit: cover;
 }
 
-/* ✍️ Caption Text */
 .caption {
   font-size: 1.3rem;
   margin-top: 10px;
   color: #5c4033;
 }
 
-/* ✨ Hover Effect */
 .item:hover {
   z-index: 10;
 }
