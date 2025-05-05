@@ -12,8 +12,8 @@ html, body {
   flex-direction: column;
   padding: 0;
   margin: 0;
-  font-family: "Patrick Hand", cursive;
-  background-color: #fdfaf6;
+  font-family: "Playfair Display", serif;
+  /* background-color: #fdfaf6; */
   color: #5c4033;
   /* line-height: 1.6; */
 }
@@ -33,18 +33,17 @@ a:hover {
 }
 
 .navbar {
-  background: rgba(255, 255, 255, 0.9);
+  background-color: #4c372d;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  border-bottom: 1px solid #ddd;
-  font-family: "Dancing Script", cursive;
 }
 
 .logo h1 {
-  font-size: 2rem;
-  color: #5c4033;
+  font-size: 1.8rem;
+  font-family: "Dancing Script", cursive;
+  color: white;
 }
 
 .nav-links {
@@ -54,13 +53,10 @@ a:hover {
 }
 
 .nav-links a {
-  font-family: "Patrick Hand", cursive;
-  font-size: 1.1rem;
+  margin-left: 1.5rem;
+  text-decoration: none;
+  color: white;
   font-weight: bold;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  background-color: #d9a066;
-  color: #fff;
 }
 
 .nav-links a:hover {
