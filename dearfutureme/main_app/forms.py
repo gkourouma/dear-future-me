@@ -1,4 +1,5 @@
 from django import forms
+from .models import Profile
 from .models import Capsule
 from .models import Memory
 
@@ -52,4 +53,13 @@ class MemoryForm(forms.ModelForm):
             'image': 'Upload Images',
             'video': 'Upload Videos',
             'audio': 'Upload Audios',
+        }
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['bio', 'profile_picture']
+        widgets = {
+            'bio': forms.Textarea(attrs={'placeholder': 'Tell us about yourself...'}),
+            'profile_picture': forms.ClearableFileInput(attrs={'accept': 'image/*'}),
         }
