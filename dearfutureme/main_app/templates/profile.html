@@ -1,0 +1,58 @@
+{% extends "base.html" %} {% load static %} {% block title %}Memory
+Lane{%endblock %} {% block head %}
+<link rel="stylesheet" href="{% static 'css/base.css' %}" />
+<link rel="stylesheet" href="{% static 'css/profile.css' %}" />
+<link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+{% endblock %} {% block content %}
+<section class="profile-container">
+  <section class="hero">
+    <h1>{{user.username}}</h1>
+    <p class="join-date">
+      <strong>Member Since:</strong> {{ join_date|date:"F j, Y" }}
+    </p>
+    <button class="edit-btn">Edit Profile</button>
+  </section>
+
+  <div class="profile-card">
+    {% if profile.profile_picture %}
+    <img src="{{ profile.profile_picture.url }}" alt="Profile Picture" />
+    {% else %}
+    <img
+      class="profile-pic"
+      src="{% static './media/9a3ff43544fd8b6338d4cd5fd0e49315.png' %}"
+      alt="Default Profile Picture"
+    />
+    {% endif %}
+
+    <p>{{ profile.bio }}</p>
+    <div><strong>Albums:</strong> {{ total_capsules }}</div>
+    <div><strong>Memories:</strong> {{ total_memories }}</div>
+  </div>
+
+  <h2>Recent Activities</h2>
+  <div class="recent-activities">
+    {% for memory in recent_activities %}
+      <div class="activity-card">
+        <div class="media-wrapper">
+          {% if memory.image %}
+            <img src="{{ memory.image.url }}" alt="{{ memory.title }}">
+          {% elif memory.video %}
+            <video src="{{ memory.video.url }}" muted autoplay loop></video>
+          {% elif memory.audio %}
+            <audio controls>
+              <source src="{{ memory.audio.url }}">
+            </audio>
+          {% endif %}
+        </div>
+        <div class="activity-info">
+          <h4>{{ memory.title }}</h4>
+          <p>By {{ memory.user.username }}</p>
+          <p class="date">{{ memory.created_at|date:"F j, Y" }}</p>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+  
+</section>
+
+{% endblock %}
