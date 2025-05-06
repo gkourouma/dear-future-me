@@ -1,16 +1,53 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
+from django.db.models import Q
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .forms import CapsuleForm
 from .models import Capsule, Memory
 from .forms import MemoryForm
+from .models import Profile
+from .forms import ProfileForm
 from django.contrib.auth.decorators import login_required
-
-# Create your views here.
 
 def home(request):
     return render(request, 'home.html')
 
+@login_required
+def profile_view(request):
+    user = request.user
+    profile = user.profile  
+    capsules = user.capsules.all()
+    memories = user.memories.all()
+
+    context = {
+        'profile': profile,
+        'join_date': user.date_joined,
+        'total_capsules': capsules.count(),
+        'total_memories': memories.count(),
+        'recent_activities': memories.order_by('-created_at')[:6],
+    }
+    return render(request, 'profile.html', context)
+
+@login_required
+def profile_edit(request):
+    profile = request.user.profile
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+    else:
+        form = ProfileForm(instance=profile)
+    return render(request, 'profile_edit.html', {'form': form})
+
+def search_user(request):
+    query = request.GET.get("q")
+    users = User.objects.filter(username__icontains=query) if query else []
+    return render(request, "search_users.html", {"users": users, "query": query})
+
+
+@login_required
 def capsule_page(request):
     capsules = Capsule.objects.filter(user=request.user)
     return render(request, 'capsules.html', {'capsules': capsules})
