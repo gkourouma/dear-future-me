@@ -46,6 +46,21 @@ def search_user(request):
     users = User.objects.filter(username__icontains=query) if query else []
     return render(request, "search_users.html", {"users": users, "query": query})
 
+def user_profile(request, username):
+    user = get_object_or_404(User, username=username)
+    profile = user.profile
+    capsules = user.capsules.all()
+    memories = user.memories.all()
+    context = {
+        'user': user,
+        'profile': profile,
+        'join_date': user.date_joined,
+        'total_capsules': capsules.count(),
+        'total_memories': memories.count(),
+        'recent_activities': memories.order_by('-created_at')[:6],
+        'profile_owner': request.user == user,
+    }
+    return render(request, 'user_profile.html', context)
 
 @login_required
 def capsule_page(request):
