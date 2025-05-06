@@ -11,6 +11,7 @@ urlpatterns = [
     path('profile/', views.profile_view, name='profile'),
     path('profile/edit/', views.profile_edit, name='profile_edit'),
     path("search/", views.search_user, name="search_user"),
+    path('user/<str:username>/', views.user_profile, name='user_profile'),
     path('capsules/', views.capsule_page, name='capsules'),
     path('capsule/create/', views.capsule_create, name='capsule_create'),
     path('capsule/<int:capsule_id>/delete/', views.capsule_delete, name='capsule_delete'),
