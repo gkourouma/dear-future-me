@@ -3,7 +3,7 @@ body {
   margin: 0;
   padding: 0;
   height: 100%;
-  font-family: "Patrick Hand", cursive;
+  font-family: "Playfair Display", serif;
   background-color: #fdfaf6;
   color: #5c4033;
 }
@@ -13,9 +13,7 @@ body {
   justify-content: center;
   align-items: flex-start;
   padding: 5rem 2rem;
-  background: url("../media/homepagebackground.png") no-repeat center center
-    fixed;
-  background-size: cover;
+  background: linear-gradient(to bottom right, #fdfaf6, #f0e4d7);
   min-height: 100vh;
   font-family: "Patrick Hand", cursive;
 }
