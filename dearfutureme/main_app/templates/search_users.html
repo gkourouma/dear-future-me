@@ -12,9 +12,9 @@ Lane{%endblock %} {% block head %}
     {% for user in users %}
     <a href="{% url 'user_profile' user.username %}" class="user-card">
       {% if user.profile.profile_picture %}
-      <img src="{{ user.profile.profile_picture.url }}" alt="{{ user.username }}'s photo"/>
+      <img class="profile-pic" src="{{ user.profile.profile_picture.url }}" alt="{{ user.username }}'s photo"/>
       {% else %}
-      <img src="{% static './media/9a3ff43544fd8b6338d4cd5fd0e49315.png' %}" alt="Default profile photo"/>
+      <img class="profile-pic" src="{% static './media/9a3ff43544fd8b6338d4cd5fd0e49315.png' %}" alt="Default profile photo"/>
       {% endif %}
       <div class="username">{{ user.username }}</div>
     </a>
