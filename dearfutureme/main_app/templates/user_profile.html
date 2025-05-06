@@ -9,7 +9,7 @@ Lane{%endblock %} {% block head %}
     <div class="profile-card">
         <section class="hero">
             {% if profile.profile_picture %}
-            <img src="{{ profile.profile_picture.url }}" alt="Profile Picture" />
+            <img class="profile-pic" src="{{ profile.profile_picture.url }}" alt="Profile Picture" />
             {% else %}
             <img
             class="profile-pic"
