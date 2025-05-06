@@ -1,0 +1,63 @@
+{% extends "base.html" %} {% load static %} {% block head %}
+<link rel="stylesheet" href="{% static 'css/base.css' %}" />
+<link rel="stylesheet" href="{% static 'css/profile.css' %}" />
+{% endblock %} {% block content %}
+<div class="profile-edit-wrapper">
+  <h2>Edit Your Profile</h2>
+  <p>Update your profile information below.</p>
+
+  {% if form.errors %}
+  <div class="error-messages">
+    <ul>
+      {% for field in form %} {% for error in field.errors %}
+      <li>{{ error }}</li>
+      {% endfor %} {% endfor %} {% for error in form.non_field_errors %}
+      <li>{{ error }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+  <form method="POST" enctype="multipart/form-data" class="profile-edit-form">
+    {% csrf_token %} {{ form.as_p }}
+
+    <label for="id_profile_picture">Profile Picture</label>
+    <input
+      type="file"
+      name="profile_picture"
+      id="id_profile_picture"
+      accept="image/*"
+    />
+
+    <div class="preview-container">
+      <img
+        id="profilePreview"
+        class="profile-pic"
+        src="{% if profile.profile_picture %}{{ profile.profile_picture.url }}{% endif %}"
+        alt="Image Preview"
+      />
+    </div>
+
+    <button type="submit" class="btn save-btn">Save Changes</button>
+  </form>
+
+  <button type="button" class="btn danger toggle-delete-btn" onclick="toggleDelete()">Show Delete Options</button>
+
+  <div id="deleteAccountSection" class="delete-account hidden">
+    <h3>Delete Account</h3>
+    <p>This action cannot be undone. Are you sure?</p>
+    <form method="POST" action="{% url 'profile_delete' profile.id %}" class="delete-form">
+      {% csrf_token %}
+      <button type="submit" class="btn danger">Delete Account</button>
+    </form>
+  </div>
+  
+
+</div>
+<script>
+    function toggleDelete() {
+      const section = document.getElementById("deleteAccountSection");
+      section.classList.toggle("hidden");
+    }
+  </script>
+  
+{% endblock %}
