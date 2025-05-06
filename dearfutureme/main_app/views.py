@@ -63,6 +63,29 @@ def user_profile(request, username):
     return render(request, 'user_profile.html', context)
 
 @login_required
+def profile_edit(request):
+    profile = get_object_or_404(Profile, user=request.user)
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+    else:
+        form = ProfileForm(instance=profile)
+    return render(request, 'edit_profile_form.html', {'form': form, 'profile': profile})
+
+
+@login_required
+def profile_delete(request, profile_id):
+    profile = get_object_or_404(Profile, id=profile_id)
+    if request.user != profile.user:
+        return redirect('profile') 
+    if request.method == 'POST':
+        profile.delete()
+        return redirect('home')
+    return render(request, 'edit_profile_form.html', {'profile': profile})
+
+@login_required
 def capsule_page(request):
     capsules = Capsule.objects.filter(user=request.user)
     return render(request, 'capsules.html', {'capsules': capsules})
