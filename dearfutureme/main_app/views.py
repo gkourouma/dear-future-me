@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from django.contrib import messages
 from django.db.models import Q
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .forms import CapsuleForm
-from .models import Capsule, Memory
+from .models import Capsule, Memory, Comment
+from .forms import CommentForm
 from .forms import MemoryForm
 from .models import Profile
 from .forms import ProfileForm
@@ -88,7 +90,7 @@ def profile_delete(request, profile_id):
 @login_required
 def capsule_page(request):
     capsules = Capsule.objects.filter(user=request.user)
-    return render(request, 'capsules.html', {'capsules': capsules})
+    return render(request, 'capsules.html', {'capsules': capsules, 'target_user': request.user})
 
 def capsule_create(request):
     if request.method == 'POST':
@@ -121,9 +123,15 @@ def capsule_delete(request, capsule_id):
     return render(request, 'capsule_delete.html', {'capsule': capsule})
 
 def capsule_detail(request, capsule_id):
-    capsule = Capsule.objects.get(id=capsule_id)
+    capsule = get_object_or_404(Capsule, id=capsule_id)
     memories = capsule.memories.all()
-    if request.method == 'POST':
+    is_owner = request.user == capsule.user
+
+    if capsule.is_locked and not capsule.is_unlockable():
+        messages.warning(request, "This capsule is locked and cannot be opened until its unlock date.")
+        return redirect('capsules')
+
+    if request.method == 'POST' and is_owner:
         form = MemoryForm(request.POST, request.FILES)
         if form.is_valid():
             memory = form.save(commit=False)
@@ -137,7 +145,19 @@ def capsule_detail(request, capsule_id):
     return render(request, 'capsule_detail.html', {
         'capsule': capsule,
         'memories': memories,
-        'form': form})
+        'form': form,
+        'is_owner': is_owner,
+    })
+
+
+def user_capsules(request, user_id):
+    target_user = get_object_or_404(User, id=user_id)
+    capsules = Capsule.objects.filter(user=target_user)
+
+    return render(request, 'capsules.html', {
+        'capsules': capsules,
+        'target_user': target_user
+    })
 
 
 def add_memory(request, capsule_id):
@@ -155,8 +175,16 @@ def add_memory(request, capsule_id):
     return render(request, 'memory_form.html', {'form': form, 'capsule': capsule})
 
 def memory_detail(request, memory_id):
-    memory = get_object_or_404(Memory, id=memory_id, user=request.user)
-    return render(request, 'memory_detail.html', {'memory': memory})
+    memory = get_object_or_404(Memory, id=memory_id)
+    comments = memory.comments.all().order_by('-created_at')
+    is_owner = request.user == memory.user
+    comment_form = CommentForm()
+    return render(request, 'memory_detail.html', {
+        'memory': memory,
+        'comments': comments,
+        'is_owner': is_owner,
+        'comment_form': comment_form,
+    })
 
 def memory_delete(request, memory_id):
     memory = get_object_or_404(Memory, id=memory_id, user=request.user)
@@ -175,6 +203,25 @@ def memory_edit(request, memory_id):
     else:
         form = MemoryForm(instance=memory)
     return render(request, 'memory_form.html', {'form': form, 'memory': memory, 'capsule': memory.capsule})
+
+def like_memory(request, memory_id):
+    memory = get_object_or_404(Memory, id=memory_id)
+    if request.user in memory.likes.all():
+        memory.likes.remove(request.user)
+    else:
+        memory.likes.add(request.user)
+    return redirect('memory_detail', memory_id=memory_id)
+
+def add_comment(request, memory_id):
+    memory = get_object_or_404(Memory, id=memory_id)
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.memory = memory
+            comment.user = request.user
+            comment.save()
+    return redirect('memory_detail', memory_id=memory_id)
 
 def signup_view(request):
     error_message = ''
