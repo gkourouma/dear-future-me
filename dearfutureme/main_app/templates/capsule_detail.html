@@ -13,10 +13,12 @@
         <p class="description">Memories from {{ capsule.title }}!</p>
         <p class="open-date">Open Date: {{ capsule.open_date|date:"F j, Y" }}</p>
     
+        {% if request.user == capsule.user %}
         <a href="{% url 'memory_form' capsule.id %}" class="btn">Add Memory</a>
         <a href="{% url 'capsule_edit' capsule.id %}" class="btn">Edit Capsule</a>
         <button class="btn delete-btn" onclick="openModal({{ capsule.id }})">Delete Capsule</button>
-      </div>
+        {% endif %}
+    </div>
     
       <div id="modal-{{ capsule.id }}" class="modal hidden">
         <div class="modal-content">
@@ -29,7 +31,7 @@
             <button type="button" class="btn cancel" onclick="closeModal({{ capsule.id }})">Cancel</button>
           </form>
         </div>
-      </div>
+    </div>
   
     <div class="wrapper">
         {% for memory in memories %}
