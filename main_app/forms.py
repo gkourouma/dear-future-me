@@ -13,17 +13,17 @@ class CapsuleForm(forms.ModelForm):
             'open_date': forms.DateInput(attrs={'type': 'date'}),
         }
         labels = {
-            'title': 'Capsule Title',
-            'content': 'Capsule Content',
+            'title': 'Album Title',
+            'content': 'Album Content',
             'cover_image': 'Upload Cover Image',
             'open_date': 'Open Date',
-            'is_locked': 'Lock Capsule?',
+            'is_locked': 'Lock Album?',
         }
         help_texts = {
-            'title': 'Enter a title for your capsule.',
-            'content': 'Write the content of your capsule here.',
-            'cover_image': 'Optional: Upload an image for your capsule cover.',
-            'open_date': 'Choose the date when this capsule will be opened.',
+            'title': 'Enter a title for your album.',
+            'content': 'Write the content of your album here.',
+            'cover_image': 'Optional: Upload an image for your album cover.',
+            'open_date': 'Choose the date when this album will be opened.',
         }
         error_messages = {
             'title': {
