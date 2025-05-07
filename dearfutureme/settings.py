@@ -31,7 +31,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 if not 'ON_HEROKU' in os.environ:
     DEBUG = True
 
-ALLOWED_HOSTS = ['django-dear-future-me.herokuapp.com','127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
