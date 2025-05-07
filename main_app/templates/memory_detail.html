@@ -25,7 +25,7 @@
 
     <p class="caption">{{ memory.content }}</p>
 
-    <a href="{% url 'capsule_detail' memory.capsule.id %}" class="btn">Back to Capsule</a>
+    <a href="{% url 'capsule_detail' memory.capsule.id %}" class="btn">Back to Album</a>
     <div class="interaction-icons">
         <form method="POST" action="{% url 'like_memory' memory.id %}">
           {% csrf_token %}
