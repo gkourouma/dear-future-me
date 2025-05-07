@@ -26,8 +26,36 @@
     <p class="caption">{{ memory.content }}</p>
 
     <a href="{% url 'capsule_detail' memory.capsule.id %}" class="btn">Back to Capsule</a>
+    <div class="interaction-icons">
+        <form method="POST" action="{% url 'like_memory' memory.id %}">
+          {% csrf_token %}
+          <button type="submit">
+            <span class="like-wrapper" onclick="document.getElementById('like-form-{{ memory.id }}').submit()">
+                <img 
+                  src="{% static 'media/heart-thin-icon.svg' %}" 
+                  class="like-icon {% if user in memory.likes.all %}liked{% endif %}" 
+                  alt="Like" 
+                />
+                <span class="like-count">{{ memory.total_likes }}</span>
+              </span>
+          </button>
+        </form>
+      
+        <a href="javascript:void(0);" class="comment-btn" onclick="toggleCommentForm()"><img src="{% static 'media/icons8-chat.svg' %}" alt="Comment Icon"></a>   
+    </div>
+
+    <div class="comment-form" id="commentForm" style="display:none;">
+        <form method="POST" action="{% url 'add_comment' memory.id %}">
+          {% csrf_token %}
+          {{ comment_form.content }}
+          <button type="submit">Post</button>
+        </form>
+    </div>
+      
+    {% if request.user == capsule.user %}
     <a href="{% url 'memory_edit' memory.id %}" class="btn">Edit Memory</a>
     <button class="btn delete-btn" onclick="openModal({{ memory.id }})"> Delete Memory</button>
+    {% endif %}
 
     <div id="modal-{{ memory.id }}" class="modal hidden">
         <div class="modal-content">
@@ -52,5 +80,45 @@
         document.getElementById(`modal-${id}`).classList.add('hidden');
         }
     </script>
+    <script>
+        function toggleCommentForm() {
+          const form = document.getElementById('commentForm');
+          form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        }
+    </script>
+    <script>
+        function toggleComments(memoryId) {
+          const commentBox = document.getElementById(`comments-${memoryId}`);
+          commentBox.classList.toggle('expanded');
+        }
+      </script>
+      
 </main>
+<div class="comment-section">
+    <h3 class="comment-title">Comments</h3>
+  
+    {% if memory.comments.all %}
+      <ul class="comment-list">
+        {% for comment in memory.comments.all|slice:":3" %}
+          <li class="comment-item">
+            <div class="comment-header">
+              <img src="{% if comment.user.profile.profile_picture %}{{ comment.user.profile.profile_picture.url }}{% else %}{% static 'media/default-avatar.png' %}{% endif %}" class="comment-avatar" alt="{{ comment.user.username }}'s avatar">
+              <div class="comment-meta">
+                <strong>{{ comment.user.username }}</strong>
+                <span class="comment-date">{{ comment.created_at|date:"M j, Y" }}</span>
+              </div>
+            </div>
+            <p class="comment-text">{{ comment.content }}</p>
+          </li>
+        {% endfor %}
+      </ul>
+      {% if memory.comments.all|length > 3 %}
+        <button class="view-all-btn" onclick="toggleComments({{ memory.id }})">View all comments</button>
+      {% endif %}
+    {% else %}
+      <p class="no-comments">No comments yet.</p>
+    {% endif %}
+</div>
+  
+  
 {% endblock %}
