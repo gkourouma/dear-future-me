@@ -15,7 +15,6 @@ html, body {
   font-family: "Playfair Display", serif;
   background-color: #f4f4f4;
   color: #5c4033;
-  /* line-height: 1.6; */
 }
 
 main{
@@ -60,7 +59,7 @@ a:hover {
 }
 
 .nav-links a:hover {
-  background-color: #c68a4b;
+  color: #c68a4b;
 }
 
 .search-container {
@@ -95,7 +94,6 @@ a:hover {
 
 .profile-pic,
 .profile-card img,
-.recent-activities img,
 .user-card img {
   width: 130px;
   height: 130px;
