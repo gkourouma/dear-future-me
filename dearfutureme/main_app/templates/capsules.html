@@ -9,13 +9,22 @@
 <main>
   <section class="capsule-page">
     <div class="header">
-      <h1 class="capsule-title">My Albums</h1>
-      <a href="{% url 'capsule_create' %}" class="btn"> + New Album</a>
+      <h1>
+        {% if request.user == target_user %}
+          {{ target_user.username }}'s Albums
+        {% else %}
+          My Albums
+        {% endif %}
+      </h1>
+      
+      {% if request.user == target_user %}
+        <a href="{% url 'capsule_create' %}" class="btn">Add New Album</a>
+      {% endif %}
     </div>
 
     <div class="capsule-grid">
       {% for capsule in capsules %}
-        <div class="capsule-card {% if capsule.is_locked %}locked{% endif %}">
+        <div class="capsule-card {% if capsule.is_locked and not capsule.is_unlockable %}locked{% endif %}">
           <div class="polaroid-frame">
             {% if capsule.cover_image %}
               <img src="{{ capsule.cover_image.url }}" alt="{{ capsule.title }}">
@@ -28,21 +37,25 @@
             <h3>{{ capsule.title }}</h3>
             <p class="open-date">Open Date: {{ capsule.open_date }}</p>
             
-            {% if capsule.is_locked %}
-              <span class="lock-icon">🔒 Locked</span>
+            {% if capsule.is_locked and not capsule.is_unlockable %}
+              <span class="lock-icon">🔒 Locked until {{ capsule.open_date }}</span>
             {% endif %}
 
             <a href="{% url 'capsule_detail' capsule.id %}" class="btn">
-              {% if capsule.is_locked %}
-                View Capsule
+              {% if capsule.is_locked and not capsule.is_unlockable %}
+              Locked Album
               {% else %}
-                Open Capsule
+                Open Album
               {% endif %}
             </a>          
           </div>
         </div>
       {% empty %}
-        <p>No capsules yet. <a href="{% url 'capsule_create' %}">Create your first one</a> </p>
+        <p>No Albums yet. 
+          {% if request.user == target_user %}
+            <a href="{% url 'capsule_create' %}">Create your first one</a>
+          {% endif %} 
+        </p>
       {% endfor %}
     </div>
   </section>
