@@ -15,14 +15,14 @@
     
         {% if request.user == capsule.user %}
         <a href="{% url 'memory_form' capsule.id %}" class="btn">Add Memory</a>
-        <a href="{% url 'capsule_edit' capsule.id %}" class="btn">Edit Capsule</a>
-        <button class="btn delete-btn" onclick="openModal({{ capsule.id }})">Delete Capsule</button>
+        <a href="{% url 'capsule_edit' capsule.id %}" class="btn">Edit Album</a>
+        <button class="btn delete-btn" onclick="openModal({{ capsule.id }})">Delete Album</button>
         {% endif %}
     </div>
     
       <div id="modal-{{ capsule.id }}" class="modal hidden">
         <div class="modal-content">
-          <h3>Delete Capsule?</h3>
+          <h3>Delete Album?</h3>
           <p>Are you sure you want to delete "<strong>{{ capsule.title }}</strong>"?</p>
           
           <form method="POST" action="{% url 'capsule_delete' capsule.id %}">
@@ -63,7 +63,7 @@
     </div>
   
     <div class="back-button">
-        <a href="{% url 'capsules' %}" class="btn">Back to Capsules</a>
+        <a href="{% url 'capsules' %}" class="btn">Back to Album</a>
     </div>
 </main>
 
