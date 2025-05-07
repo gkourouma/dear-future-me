@@ -28,6 +28,7 @@ Lane{%endblock %} {% block head %}
 
     <p>{{ profile.bio }}</p>
     <div><strong>Albums:</strong> {{ total_capsules }}</div>
+    <a href="{% url 'user_capsules' user.id %}">View Albums</a>
     <div><strong>Memories:</strong> {{ total_memories }}</div>
   </div>
 
