@@ -2,12 +2,13 @@ from django import forms
 from .models import Profile
 from .models import Capsule
 from .models import Memory
+from .models import Comment
 
 
 class CapsuleForm(forms.ModelForm):
     class Meta:
         model = Capsule
-        fields = ['title', 'content', 'cover_image', 'open_date']
+        fields = ['title', 'content', 'cover_image', 'is_locked', 'open_date']
         widgets = {
             'open_date': forms.DateInput(attrs={'type': 'date'}),
         }
@@ -15,7 +16,8 @@ class CapsuleForm(forms.ModelForm):
             'title': 'Capsule Title',
             'content': 'Capsule Content',
             'cover_image': 'Upload Cover Image',
-            'open_date': 'Select Open Date',
+            'open_date': 'Open Date',
+            'is_locked': 'Lock Capsule?',
         }
         help_texts = {
             'title': 'Enter a title for your capsule.',
@@ -63,3 +65,8 @@ class ProfileForm(forms.ModelForm):
             'bio': forms.Textarea(attrs={'placeholder': 'Tell us about yourself...'}),
             'profile_picture': forms.ClearableFileInput(attrs={'accept': 'image/*'}),
         }
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']
