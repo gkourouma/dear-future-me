@@ -11,6 +11,8 @@ dj-database-url = "*"
 psycopg2-binary = "*"
 gunicorn = "*"
 pillow = "*"
+cloudinary = "*"
+django-cloudinary-storage = "*"
 
 [dev-packages]
 
