@@ -25,6 +25,7 @@ urlpatterns = [
     path('memories/<int:memory_id>/edit/', views.memory_edit, name='memory_edit'),
     path('memory/<int:memory_id>/like/', views.like_memory, name='like_memory'),
     path('memory/<int:memory_id>/comment/', views.add_comment, name='add_comment'),
+    path('save-avatar/', views.save_avatar, name='save_avatar'),
 
 ]
 
