@@ -19,15 +19,12 @@
   </div>
   {% endif %}
   <form method="POST" enctype="multipart/form-data" class="profile-edit-form">
-    {% csrf_token %} {{ form.as_p }}
-
-    <label for="id_profile_picture">Profile Picture</label>
-    <input
-      type="file"
-      id="avatar-upload"
-      name="profile_picture"
-      accept="image/*"
-    />
+    {% csrf_token %} {{ form.bio.label_tag }}  
+    {{ form.bio }}
+    
+    <label for="avatar-upload">Profile Picture</label>
+    <input type="file" id="avatar-upload" name="profile_picture" accept="image/*" />
+    
 
     <div class="preview-container">
       <img
