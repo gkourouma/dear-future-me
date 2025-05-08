@@ -62,8 +62,7 @@ class ProfileForm(forms.ModelForm):
         model = Profile
         fields = ['bio', 'profile_picture']
         widgets = {
-            'bio': forms.Textarea(attrs={'placeholder': 'Tell us about yourself...'}),
-            'profile_picture': forms.ClearableFileInput(attrs={'accept': 'image/*'}),
+            'bio': forms.Textarea(attrs={'placeholder': 'Tell us about yourself...'})
         }
 
 class CommentForm(forms.ModelForm):
