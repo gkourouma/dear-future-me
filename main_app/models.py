@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import date
+from cloudinary_storage.storage import MediaCloudinaryStorage
 
 # Create your models here.
 class Capsule(models.Model):
@@ -9,7 +10,12 @@ class Capsule(models.Model):
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     is_locked = models.BooleanField(default=True)
-    cover_image = models.ImageField(upload_to='capsule_images/', blank=True, null=True)
+    cover_image = models.ImageField(
+        upload_to='capsule_images/',
+        storage=MediaCloudinaryStorage(),
+        blank=True,
+        null=True,
+    )
     open_date = models.DateField()
 
     def __str__(self):
