@@ -60,9 +60,10 @@ class MemoryForm(forms.ModelForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['bio']
+        fields = ['bio', 'profile_picture']
         widgets = {
-            'bio': forms.Textarea(attrs={'placeholder': 'Tell us about yourself...'})
+            'bio': forms.Textarea(attrs={'placeholder': 'Tell us about yourself...'}),
+            'profile_picture': forms.ClearableFileInput(attrs={'accept':'image/*'}),
         }
 
 class CommentForm(forms.ModelForm):
