@@ -30,9 +30,24 @@ class Memory(models.Model):
     title = models.CharField(max_length=255)
     date_taken = models.DateField(null=True, blank=True)
     content = models.TextField()
-    image = models.ImageField(upload_to='memory_images/', blank=True, null=True)
-    video = models.FileField(upload_to='memory_videos/', blank=True, null=True)
-    audio = models.FileField(upload_to='memory_audios/', blank=True, null=True)
+    image = models.ImageField(
+        upload_to='memory_images/',
+        storage=MediaCloudinaryStorage(resource_type='image'),
+        blank=True,
+        null=True,
+    )
+    video = models.FileField(
+        upload_to='memory_videos/',
+        storage=MediaCloudinaryStorage(resource_type='video'),
+        blank=True,
+        null=True,
+    )
+    audio = models.FileField(
+        upload_to='memory_audio/',
+        storage=MediaCloudinaryStorage(resource_type='raw'),
+        blank=True,
+        null=True,
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     likes = models.ManyToManyField(User, related_name='liked_memories', blank=True)
 
@@ -53,7 +68,12 @@ class Comment(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(blank=True, null=True)
-    profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
+    profile_picture = models.ImageField(
+        upload_to='profile_pictures/',
+        storage=MediaCloudinaryStorage(), 
+        blank=True,
+        null=True,
+    )
 
     def __str__(self):
         return self.user.username
