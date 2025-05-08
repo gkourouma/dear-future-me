@@ -34,18 +34,6 @@ def profile_view(request):
     }
     return render(request, 'profile.html', context)
 
-@login_required
-def profile_edit(request):
-    profile = request.user.profile
-    if request.method == 'POST':
-        form = ProfileForm(request.POST, request.FILES, instance=profile)
-        if form.is_valid():
-            form.save()
-            return redirect('profile')
-    else:
-        form = ProfileForm(instance=profile)
-    return render(request, 'profile_edit.html', {'form': form})
-
 def search_user(request):
     query = request.GET.get("q")
     users = User.objects.filter(username__icontains=query) if query else []
