@@ -21,21 +21,22 @@
     {% csrf_token %} {{ form.as_p }}
 
     <label for="id_profile_picture">Profile Picture</label>
-    <input
-      type="file"
-      name="profile_picture"
-      id="id_profile_picture"
-      accept="image/*"
+    <input 
+      type="file" 
+      id="avatar-upload" 
+      accept="image/*" 
     />
+
 
     <div class="preview-container">
       <img
         id="profilePreview"
+        src="{% if user.userprofile.profile_picture %}{% cloudinary_url user.userprofile.profile_picture width=150 height=150 crop='thumb' gravity='face' %}{% endif %}"
+        alt="Profile preview"
         class="profile-pic"
-        src="{% if profile.profile_picture %}{{ profile.profile_picture.url }}{% endif %}"
-        alt="Image Preview"
       />
     </div>
+    
 
     <div class="buttons">
     <button type="submit" class="btn save-btn">Save Changes</button>
@@ -50,6 +51,42 @@
     <form method="POST" action="{% url 'profile_delete' profile.id %}" class="delete-form">
       {% csrf_token %}
       <button type="submit" class="btn danger">Delete Account</button>
+
+      <script>
+        document.getElementById("avatar-upload")
+          .addEventListener("change", async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("upload_preset", "social_avatars");
+        
+            // 1) Upload to Cloudinary unsigned
+            const res = await fetch(
+              "https://api.cloudinary.com/v1_1/dvcf7djwv/auto/upload",
+              { method: "POST", body: formData }
+            );
+            const data = await res.json();
+            if (data.error) {
+              console.error("Upload failed:", data.error);
+              return;
+            }
+        
+            // 2) Tell your Django backend to save the public_id
+            await fetch("{% url 'save_avatar' %}", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": "{{ csrf_token }}",
+              },
+              body: JSON.stringify({ public_id: data.public_id }),
+            });
+        
+            // 3) Update the on-page preview
+            document.getElementById("profilePreview").src = data.secure_url;
+          });
+        </script>
+        
     </form>
   </div>
   
