@@ -24,25 +24,10 @@
 }
 
 .profile-pic {
-  width: 150px;
-  height: 150px;
+  max-width: 150px;
+  aspect-ratio: 1/1;
   object-fit: cover;
   border-radius: 50%;
-  margin-bottom: 1rem;
-}
-
-.preview-container {
-  margin-top: 1rem;
-  display: flex;
-  justify-content: center;
-}
-
-.preview-pic {
-  width: 150px;
-  height: 150px;
-  object-fit: cover;
-  border-radius: 50%;
-  border: 2px solid #ccc;
 }
 
 .hidden {
