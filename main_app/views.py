@@ -3,6 +3,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.db.models import Q
+import json
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .forms import CapsuleForm
 from .models import Capsule, Memory, Comment
@@ -222,6 +225,20 @@ def add_comment(request, memory_id):
             comment.user = request.user
             comment.save()
     return redirect('memory_detail', memory_id=memory_id)
+
+@login_required
+@csrf_exempt
+def save_avatar(request):
+    if request.method == "POST":
+        payload = json.loads(request.body)
+        public_id = payload.get("public_id")
+        if public_id:
+            profile = request.user.profile
+            profile.profile_picture = public_id
+            profile.save()
+            return JsonResponse({"status": "ok"})
+    return JsonResponse({"status": "error"}, status=400)
+
 
 def signup_view(request):
     error_message = ''
