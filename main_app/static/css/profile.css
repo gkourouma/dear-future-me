@@ -11,6 +11,7 @@
 .profile-card .hero{
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: .5rem;
 }
 .profile-card {
@@ -24,9 +25,6 @@
 }
 
 .profile-pic {
-  max-width: 150px;
-  aspect-ratio: 1/1;
-  object-fit: cover;
   border-radius: 50%;
 }
 
@@ -89,12 +87,14 @@
 
 .recent-activities {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 1.5rem;
   padding: 2rem;
 }
 
 .activity-card {
+  width: 15.625rem; 
+  height: 20rem; 
   background: #fff;
   border-radius: 12px;
   overflow: hidden;
@@ -111,9 +111,9 @@
 
 .media-wrapper img,
 .media-wrapper video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  width: 15.625rem; 
+  height: 15.625rem; 
+  object-fit: contain;
 }
 
 .media-wrapper audio {
@@ -190,7 +190,6 @@
   box-shadow: 4px 6px 14px rgba(0, 0, 0, 0.1);
 }
 
-form input[type="text"],
 form input[type="date"],
 form input[type="file"],
 form select,
