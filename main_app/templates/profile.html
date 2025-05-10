@@ -1,4 +1,5 @@
-{% extends "base.html" %} {% load static %} {% load cloudinary %}
+{% extends "base.html" %} 
+{% load static cloudinary %}
 {% block title %}Memory Lane{%endblock %} 
 {% block head %}
 <link rel="stylesheet" href="{% static 'css/base.css' %}" />
@@ -11,22 +12,17 @@
     <section class="hero">
       {% if profile.profile_picture %}
       <img
-      class="profile-pic"
-      src="{% cloudinary_url
-              profile.profile_picture
-              width=150 height=150
-              crop='thumb' gravity='face'
-              fetch_format='auto' quality='auto'
-            %}"
-      alt="Profile Picture"
-    />
-      {% else %}
+        class="profile-pic"
+        src="{% cloudinary_url profile.profile_picture width=300 height=300 crop='fit' fetch_format='auto' quality='auto:best' %}"
+        alt="{{ user.username }}’s avatar"
+      />
+    {% else %}
       <img
         class="profile-pic"
-        src="{% static './media/9a3ff43544fd8b6338d4cd5fd0e49315.png' %}"
+        src="{% static 'media/default-avatar.png' %}"
         alt="Default Profile Picture"
       />
-      {% endif %}
+    {% endif %}
       <h1>{{user.username}}</h1>
       <p class="join-date">
         <strong>Member Since:</strong> {{ join_date|date:"F j, Y" }}
@@ -34,25 +30,38 @@
       <a href="{% url 'profile_edit' %}" class="edit-btn">Edit Profile</a>
     </section>
 
-    <p>{{ profile.bio }}</p>
+    <p>{{ profile.bio|default:'No bio yet.' }}</p>
     <div><strong>Albums:</strong> {{ total_capsules }}</div>
     <div><strong>Memories:</strong> {{ total_memories }}</div>
   </div>
 
-  <h2>Recent Activities</h2>
+  <h2>Recent Memories</h2>
   <div class="recent-activities">
     {% for memory in recent_activities %}
-    <div class="activity-card">
-      <div class="media-wrapper">
-        {% if memory.image %}
-        <img src="{{ memory.image.url }}" alt="{{ memory.title }}" />
-        {% elif memory.video %}
-        <video src="{{ memory.video.url }}" muted autoplay loop></video>
-        {% elif memory.audio %}
+  <div class="activity-card">
+    <div class="media-wrapper">
+
+      {% if memory.image %}
+        <img
+          src="{% cloudinary_url memory.image width=700 height=700 crop='fill' fetch_format='auto' quality='auto:best' dpr='auto' %}"
+          alt="{{ memory.title }}"
+        />
+      {% elif memory.video %}
+        <video
+          src="{% cloudinary_url memory.video resource_type='video' width=600 crop='limit' video_codec='auto' fetch_form='auto' quality='auto' %}"
+          muted autoplay loop
+        ></video>
+      {% elif memory.audio %}
+        {% cloudinary_url memory.audio
+            resource_type='video'
+            format='mp3'
+            audio_codec='aac'
+            audio_bitrate='64k' as audio_url %}
         <audio controls>
-          <source src="{{ memory.audio.url }}" />
+          <source src="{{ audio_url }}" type="audio/mpeg">
+          Your browser does not support the audio element.
         </audio>
-        {% endif %}
+      {% endif %}
       </div>
       <div class="activity-info">
         <h4>{{ memory.title }}</h4>
@@ -60,6 +69,8 @@
         <p class="date">{{ memory.created_at|date:"F j, Y" }}</p>
       </div>
     </div>
+    {% empty %}
+      <p>No recent memories to show.</p>
     {% endfor %}
   </div>
 </section>
