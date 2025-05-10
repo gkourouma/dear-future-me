@@ -1,106 +1,83 @@
-{% extends "base.html" %} {% load static %} {% load cloudinary %} {% block head
-%}
-<link rel="stylesheet" href="{% static 'css/base.css' %}" />
-<link rel="stylesheet" href="{% static 'css/profile.css' %}" />
-{% endblock %} {% block content %}
+{% extends "base.html" %}
+{% load static cloudinary %}
+{% load avatar_tags %}
+
+
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+  <link rel="stylesheet" href="{% static 'css/edit_profile_form.css' %}">
+{% endblock %}
+
+{% block content %}
 <div class="profile-edit-wrapper">
   <h2>Edit Your Profile</h2>
-  <p>Update your profile information below.</p>
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
 
-  {% if form.errors %}
-  <div class="error-messages">
-    <ul>
-      {% for field in form %} {% for error in field.errors %}
-      <li>{{ error }}</li>
-      {% endfor %} {% endfor %} {% for error in form.non_field_errors %}
-      <li>{{ error }}</li>
-      {% endfor %}
-    </ul>
-  </div>
-  {% endif %}
-  <form method="POST" enctype="multipart/form-data" class="profile-edit-form">
-    {% csrf_token %} {{ form.bio.label_tag }}  
-    {{ form.bio }}
-    
-    <label for="avatar-upload">Profile Picture</label>
-    <input type="file" id="avatar-upload" name="profile_picture" accept="image/*" />
-    
+    <div class="form-group">
+      {{ form.bio.label_tag }}
+      {{ form.bio }}
+    </div>
+
+    <div class="form-group">
+      <label for="avatar-upload">Profile Picture</label>
+      <input
+        type="file"
+        id="avatar-upload"
+        name="profile_picture"
+        accept="image/*"
+      />
+
+      <script>
+        document.getElementById("avatar-upload").addEventListener("change", async (e) => {
+          const file = e.target.files[0];
+          if (!file) return;
+        
+          const formData = new FormData();
+          formData.append("file", file);
+          formData.append("upload_preset", "social_avatars");
+        
+          // 🔑 Use the /image/upload endpoint for unsigned photo uploads
+          const cloudRes = await fetch(
+            "https://api.cloudinary.com/v1_1/dvcf7djwv/image/upload",
+            { method: "POST", body: formData }
+          );
+          const data = await cloudRes.json();
+          if (data.error) {
+            console.error("Cloudinary upload failed:", data.error);
+            return;
+          }
+        
+          // Save the returned public_id
+          await fetch("{% url 'save_avatar' %}", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-CSRFToken": "{{ csrf_token }}",
+            },
+            body: JSON.stringify({ public_id: data.public_id }),
+          });
+        
+          // Update the on-page preview
+          document.getElementById("profilePreview").src = data.secure_url;
+        });
+        </script>       
+    </div>
 
     <div class="preview-container">
       <img
         id="profilePreview"
-        src="{% if user.userprofile.profile_picture %}{% cloudinary_url user.userprofile.profile_picture width=150 height=150 crop='thumb' gravity='face' %}{% endif %}"
-        alt="Profile preview"
         class="profile-pic"
+        src="{% avatar_preview request.user 150 %}"
+        alt="Profile Picture Preview"
       />
     </div>
 
     <div class="buttons">
       <button type="submit" class="btn save-btn">Save Changes</button>
-      <button
-        type="button"
-        class="btn danger toggle-delete-btn"
-        onclick="toggleDelete()"
-      >
-        Show Delete Options
-      </button>
+      <a href="{% url 'profile' %}" class="btn cancel-btn">Cancel</a>
     </div>
   </form>
-
-  <div id="deleteAccountSection" class="delete-account hidden">
-    <h3>Delete Account</h3>
-    <p>This action cannot be undone. Are you sure?</p>
-    <form
-      method="POST"
-      action="{% url 'profile_delete' profile.id %}"
-      class="delete-form"
-    >
-      {% csrf_token %}
-      <button type="submit" class="btn danger">Delete Account</button>
-    </form>
-  </div>
 </div>
-<script>
-  document
-    .getElementById("avatar-upload")
-    .addEventListener("change", async (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("upload_preset", "social_avatars");
-
-      // 1) Upload to Cloudinary unsigned
-      const res = await fetch(
-        "https://api.cloudinary.com/v1_1/dvcf7djwv/auto/upload",
-        { method: "POST", body: formData }
-      );
-      const data = await res.json();
-      if (data.error) {
-        console.error("Upload failed:", data.error);
-        return;
-      }
-
-      // 2) Tell your Django backend to save the public_id
-      await fetch("{% url 'save_avatar' %}", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRFToken": "{{ csrf_token }}",
-        },
-        body: JSON.stringify({ public_id: data.public_id }),
-      });
-
-      // 3) Update the on-page preview
-      document.getElementById("profilePreview").src = data.secure_url;
-    });
-</script>
-
-<script>
-  function toggleDelete() {
-    const section = document.getElementById("deleteAccountSection");
-    section.classList.toggle("hidden");
-  }
-</script>
-
 {% endblock %}
