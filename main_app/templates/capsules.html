@@ -6,38 +6,38 @@
 {% endblock %}
 
 {% block content %}
-<main>
-  <section class="capsule-page">
-    <div class="header">
-      <h1>
+  <main>
+    <section class="capsule-page">
+      <div class="header">
+        <h1>
+          {% if request.user == target_user %}
+            My Albums
+          {% else %}
+            {{ target_user.username }}’s Albums
+          {% endif %}
+        </h1>
+        
         {% if request.user == target_user %}
-          {{ target_user.username }}’s Albums
-        {% else %}
-          My Albums
+          <a href="{% url 'capsule_create' %}" class="btn">Add New Album</a>
         {% endif %}
-      </h1>
+      </div>
 
-      {% if request.user == target_user %}
-        <a href="{% url 'capsule_create' %}" class="btn">Add New Album</a>
-      {% endif %}
-    </div>
-
-    <div class="capsule-grid">
-      {% for capsule in capsules %}
-        <div class="capsule-card {% if capsule.is_locked and not capsule.is_unlockable %}locked{% endif %}">
+      <div class="capsule-grid">
+        {% for capsule in capsules %}
+          <div class="capsule-card {% if capsule.is_locked and not capsule.is_unlockable %}locked{% endif %}">
           <div class="polaroid-frame">
             {% if capsule.cover_image %}
-            <img
-            class="polaroid-img"
-            src="{% cloudinary_url capsule.cover_image crop='fit' fetch_format='auto' quality='auto:best' dpr='auto' %}"
-            alt="{{ capsule.title }} cover"
-          />
-        {% else %}
-          <img
-            class="polaroid-img"
-            src="{% static 'media/blankpolaroid.png' %}"
-            alt="Blank Polaroid"
-          />
+              <img
+              class="polaroid-img"
+              src="{% cloudinary_url capsule.cover_image crop='fit' fetch_format='auto' quality='auto:best' dpr='auto' %}"
+              alt="{{ capsule.title }} cover"
+              />
+            {% else %}
+              <img
+                class="polaroid-img"
+                src="{% static 'media/blankpolaroid.png' %}"
+                alt="Blank Polaroid"
+              />
             {% endif %}
           </div>
 
@@ -59,11 +59,11 @@
               {% endif %}
             </a>
           </div>
-        </div>
-      {% empty %}
-        <p>No Albums yet. {% if request.user == target_user %}<a href="{% url 'capsule_create' %}">Create your first one</a>{% endif %}</p>
-      {% endfor %}
-    </div>
-  </section>
-</main>
+      </div>
+        {% empty %}
+          <p>No Albums yet. {% if request.user == target_user %}<a href="{% url 'capsule_create' %}">Create your first one</a>{% endif %}</p>
+        {% endfor %}
+      </div>
+    </section>
+  </main>
 {% endblock %}
