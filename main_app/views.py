@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.contrib.auth import get_user_model
 from django.db.models import Q
 import json
 from django.http import JsonResponse
@@ -14,6 +15,8 @@ from .forms import MemoryForm
 from .models import Profile
 from .forms import ProfileForm
 from django.contrib.auth.decorators import login_required
+
+User = get_user_model()
 
 def home(request):
     return render(request, 'home.html')
@@ -77,6 +80,24 @@ def profile_delete(request, profile_id):
         profile.delete()
         return redirect('home')
     return render(request, 'edit_profile_form.html', {'profile': profile})
+
+@login_required
+def toggle_follow(request, username):
+    target_user = get_object_or_404(User, username=username)
+    me   = request.user.profile
+    them = target_user.profile
+
+    if me == them:
+        messages.error(request, "You can’t follow yourself.")
+    else:
+        if them in me.following.all():
+            me.following.remove(them)
+            messages.success(request, f"You’ve unfollowed {them.user.username}.")
+        else:
+            me.following.add(them)
+            messages.success(request, f"You’re now following {them.user.username}.")
+
+    return redirect('user_profile', username=username)
 
 @login_required
 def capsule_page(request):

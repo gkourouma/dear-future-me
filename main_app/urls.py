@@ -13,6 +13,7 @@ urlpatterns = [
     path('profile/<int:profile_id>/delete/', views.profile_delete, name='profile_delete'),
     path("search/", views.search_user, name="search_user"),
     path('user/<str:username>/', views.user_profile, name='user_profile'),
+    path('profile/<str:username>/toggle-follow/', views.toggle_follow, name='toggle_follow'),
     path('capsules/', views.capsule_page, name='capsules'),
     path('capsule/create/', views.capsule_create, name='capsule_create'),
     path('capsule/<int:capsule_id>/delete/', views.capsule_delete, name='capsule_delete'),

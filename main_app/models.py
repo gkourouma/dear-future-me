@@ -72,5 +72,13 @@ class Profile(models.Model):
         null=True,
     )
 
+    following = models.ManyToManyField(
+        'self',
+        symmetrical=False,
+        related_name='followers',
+        blank=True,
+        help_text="Profiles this user is following"
+    )
+    
     def __str__(self):
         return self.user.username
