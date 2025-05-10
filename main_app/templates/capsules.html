@@ -1,8 +1,8 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static cloudinary %}
 
 {% block head %}
-  <link rel="stylesheet" href="{% static 'css/capsules.css' %}">
+  <link rel="stylesheet" href="{% static 'css/capsules.css' %}" />
 {% endblock %}
 
 {% block content %}
@@ -11,12 +11,12 @@
     <div class="header">
       <h1>
         {% if request.user == target_user %}
-          {{ target_user.username }}'s Albums
+          {{ target_user.username }}’s Albums
         {% else %}
           My Albums
         {% endif %}
       </h1>
-      
+
       {% if request.user == target_user %}
         <a href="{% url 'capsule_create' %}" class="btn">Add New Album</a>
       {% endif %}
@@ -27,35 +27,41 @@
         <div class="capsule-card {% if capsule.is_locked and not capsule.is_unlockable %}locked{% endif %}">
           <div class="polaroid-frame">
             {% if capsule.cover_image %}
-              <img src="{{ capsule.cover_image.url }}" alt="{{ capsule.title }}">
-            {% else %}
-              <img src="{% static 'media/blankpolaroid.png' %}" alt="Blank Polaroid">
+            <img
+            class="polaroid-img"
+            src="{% cloudinary_url capsule.cover_image crop='fit' fetch_format='auto' quality='auto:best' dpr='auto' %}"
+            alt="{{ capsule.title }} cover"
+          />
+        {% else %}
+          <img
+            class="polaroid-img"
+            src="{% static 'media/blankpolaroid.png' %}"
+            alt="Blank Polaroid"
+          />
             {% endif %}
           </div>
 
           <div class="card-content">
             <h3>{{ capsule.title }}</h3>
-            <p class="open-date">Open Date: {{ capsule.open_date }}</p>
-            
             {% if capsule.is_locked and not capsule.is_unlockable %}
-              <span class="lock-icon">🔒 Locked until {{ capsule.open_date }}</span>
+              <span class="lock-icon">
+                🔒 Locked until {{ capsule.open_date|date:"F j, Y" }}
+              </span>
+            {% else %}
+              <p class="description">{{ capsule.content|truncatechars:100 }}</p>
             {% endif %}
 
             <a href="{% url 'capsule_detail' capsule.id %}" class="btn">
               {% if capsule.is_locked and not capsule.is_unlockable %}
-              Locked Album
+                Locked Album
               {% else %}
                 Open Album
               {% endif %}
-            </a>          
+            </a>
           </div>
         </div>
       {% empty %}
-        <p>No Albums yet. 
-          {% if request.user == target_user %}
-            <a href="{% url 'capsule_create' %}">Create your first one</a>
-          {% endif %} 
-        </p>
+        <p>No Albums yet. {% if request.user == target_user %}<a href="{% url 'capsule_create' %}">Create your first one</a>{% endif %}</p>
       {% endfor %}
     </div>
   </section>
