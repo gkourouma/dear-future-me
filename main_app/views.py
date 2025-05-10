@@ -168,12 +168,12 @@ def add_memory(request, capsule_id):
 def memory_detail(request, memory_id):
     memory = get_object_or_404(Memory, id=memory_id)
     comments = memory.comments.all().order_by('-created_at')
-    is_owner = request.user == memory.user
+    target_user = request.user == memory.user
     comment_form = CommentForm()
     return render(request, 'memory_detail.html', {
         'memory': memory,
         'comments': comments,
-        'is_owner': is_owner,
+        'target_user': request.user,
         'comment_form': comment_form,
     })
 
