@@ -27,12 +27,17 @@
       <p class="join-date">
         <strong>Member Since:</strong> {{ join_date|date:"F j, Y" }}
       </p>
-      <a href="{% url 'profile_edit' %}" class="edit-btn">Edit Profile</a>
     </section>
-
+    
     <p>{{ profile.bio|default:'No bio yet.' }}</p>
-    <div><strong>Albums:</strong> {{ total_capsules }}</div>
-    <div><strong>Memories:</strong> {{ total_memories }}</div>
+    <div class="album-count">
+      <strong>Albums:</strong> <span>{{ total_capsules }}</span>
+      <a href="{% url 'capsule_create' %}" class="edit-btn">Create Album</a>
+    </div>
+    <div class="memory-count">
+      <strong>Memories:</strong> <span>{{ total_memories }}</span>
+      <a href="{% url 'profile_edit' %}" class="edit-btn">Edit Profile</a>
+    </div>
   </div>
 
   <h2>Recent Memories</h2>
