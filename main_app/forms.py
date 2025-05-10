@@ -1,4 +1,5 @@
 from django import forms
+from django.core.exceptions import ValidationError
 from .models import Profile
 from .models import Capsule
 from .models import Memory
@@ -10,6 +11,10 @@ class CapsuleForm(forms.ModelForm):
         model = Capsule
         fields = ['title', 'content', 'cover_image', 'is_locked', 'open_date']
         widgets = {
+            'title': forms.TextInput(attrs={'placeholder': 'Enter a title for your album'}),
+            'content': forms.Textarea(attrs={'placeholder': 'Write about your album here...'}),
+            'cover_image': forms.ClearableFileInput(attrs={'accept': 'image/*', 'placeholder': 'Upload an Image'}),
+            'is_locked': forms.CheckboxInput(attrs={'placeholder': 'Lock Album'}),
             'open_date': forms.DateInput(attrs={'type': 'date'}),
         }
         labels = {
@@ -20,10 +25,8 @@ class CapsuleForm(forms.ModelForm):
             'is_locked': 'Lock Album?',
         }
         help_texts = {
-            'title': 'Enter a title for your album.',
-            'content': 'Write the content of your album here.',
             'cover_image': 'Optional: Upload an image for your album cover.',
-            'open_date': 'Choose the date when this album will be opened.',
+            'open_date': 'If locked, Choose the date when this album will be opened.',
         }
         error_messages = {
             'title': {
@@ -34,6 +37,17 @@ class CapsuleForm(forms.ModelForm):
                 'invalid': 'Enter a valid date.',
             },
         }
+
+    def clean(self):
+        cleaned = super().clean()
+        locked    = cleaned.get('is_locked')
+        open_date = cleaned.get('open_date')
+
+        if locked and not open_date:
+            self.add_error('open_date',
+                "You must specify an open date if you lock this capsule."
+            )
+        return cleaned
 
 
 class MemoryForm(forms.ModelForm):
