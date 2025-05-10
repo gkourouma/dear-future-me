@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
-
+{% load static cloudinary %}
 {% block head %}
   <link rel="stylesheet" href="{% static 'css/base.css' %}">
   <link rel="stylesheet" href="{% static 'css/memory_detail.css' %}">
@@ -8,20 +7,30 @@
 
 {% block content %}
 <main>
-    <section class="overlay">
+  <section class="overlay">
     <div class="memory-detail">
-    <h1>{{ memory.title }}</h1>
-    <p class="date">Memory Date: {{ memory.date_taken|date:"F j, Y" }}</p>
+      <h1>{{ memory.title }}</h1>
+      <p class="date">Memory Date: {{ memory.date_taken|date:"F j, Y" }}</p>
 
-    {% if memory.image %}
-        <img src="{{ memory.image.url }}" alt="{{ memory.title }}">
+      {% if memory.image %}
+      <img
+        class="memory-img"
+        src="{% cloudinary_url memory.image crop='fit' fetch_format='auto' quality='auto:best' dpr='auto' %}"
+        alt="{{ memory.title }}"
+      />
     {% elif memory.video %}
-        <video src="{{ memory.video.url }}" controls></video>
+      <video
+        controls muted autoplay loop
+        class="memory-video"
+        src="{% cloudinary_url memory.video resource_type='video' width=800 crop='limit' video_codec='auto' fetch_format='auto' quality='auto:good'%}"></video>
     {% elif memory.audio %}
-        <audio controls>
-        <source src="{{ memory.audio.url }}">
-        </audio>
+      {% cloudinary_url memory.audio resource_type='video' format='mp3' audio_codec='aac' audio_bitrate='64k' as audio_url %}
+      <audio controls>
+        <source src="{{ audio_url }}" type="audio/mpeg">
+        Your browser does not support the audio element.
+      </audio>
     {% endif %}
+
 
     <p class="caption">{{ memory.content }}</p>
 
@@ -52,7 +61,7 @@
         </form>
     </div>
       
-    {% if request.user == capsule.user %}
+    {% if request.user == memory.user %}
     <a href="{% url 'memory_edit' memory.id %}" class="btn">Edit Memory</a>
     <button class="btn delete-btn" onclick="openModal({{ memory.id }})"> Delete Memory</button>
     {% endif %}
@@ -95,29 +104,43 @@
       
 </main>
 <div class="comment-section">
-    <h3 class="comment-title">Comments</h3>
-  
-    {% if memory.comments.all %}
-      <ul class="comment-list">
-        {% for comment in memory.comments.all|slice:":3" %}
-          <li class="comment-item">
-            <div class="comment-header">
-              <img src="{% if comment.user.profile.profile_picture %}{{ comment.user.profile.profile_picture.url }}{% else %}{% static 'media/default-avatar.png' %}{% endif %}" class="comment-avatar" alt="{{ comment.user.username }}'s avatar">
-              <div class="comment-meta">
-                <strong>{{ comment.user.username }}</strong>
-                <span class="comment-date">{{ comment.created_at|date:"M j, Y" }}</span>
-              </div>
+  <h3 class="comment-title">Comments</h3>
+
+  {% if memory.comments.all %}
+    <ul class="comment-list">
+      {% for comment in memory.comments.all|slice:":3" %}
+        <li class="comment-item">
+          <div class="comment-header">
+            {% if comment.user.profile.profile_picture %}
+              <img
+                class="comment-avatar"
+                src="{% cloudinary_url comment.user.profile.profile_picture width=40 height=40 crop='thumb' fetch_format='auto' quality='auto:best'%}"
+                alt="{{ comment.user.username }}’s avatar"
+              />
+            {% else %}
+              <img
+                class="comment-avatar"
+                src="{% static 'media/default-avatar.png' %}"
+                alt="Default avatar"
+              />
+            {% endif %}
+            <div class="comment-meta">
+              <strong>{{ comment.user.username }}</strong>
+              <span class="comment-date">{{ comment.created_at|date:"M j, Y" }}</span>
             </div>
-            <p class="comment-text">{{ comment.content }}</p>
-          </li>
-        {% endfor %}
-      </ul>
-      {% if memory.comments.all|length > 3 %}
-        <button class="view-all-btn" onclick="toggleComments({{ memory.id }})">View all comments</button>
-      {% endif %}
-    {% else %}
-      <p class="no-comments">No comments yet.</p>
+          </div>
+          <p class="comment-text">{{ comment.content }}</p>
+        </li>
+      {% endfor %}
+    </ul>
+    {% if memory.comments.all|length > 3 %}
+      <button class="view-all-btn" onclick="toggleComments({{ memory.id }})">
+        View all comments
+      </button>
     {% endif %}
+  {% else %}
+    <p class="no-comments">No comments yet.</p>
+  {% endif %}
 </div>
   
   
