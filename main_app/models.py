@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from datetime import date
 from cloudinary_storage.storage import MediaCloudinaryStorage
+from cloudinary.models import CloudinaryField
 
 # Create your models here.
 class Capsule(models.Model):
@@ -9,14 +10,14 @@ class Capsule(models.Model):
     title = models.CharField(max_length=255)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    is_locked = models.BooleanField(default=True)
-    cover_image = models.ImageField(
-        upload_to='capsule_images/',
-        storage=MediaCloudinaryStorage(),
-        blank=True,
+    is_locked = models.BooleanField(default=False)
+    cover_image = CloudinaryField(
+        'cover',
+        upload_preset='capsule_cover',)
+    open_date = models.DateField(
         null=True,
-    )
-    open_date = models.DateField()
+        blank=True,
+        help_text="Only required if this capsule is locked.")
 
     def __str__(self):
         return self.title
@@ -30,23 +31,20 @@ class Memory(models.Model):
     title = models.CharField(max_length=255)
     date_taken = models.DateField(null=True, blank=True)
     content = models.TextField()
-    image = models.ImageField(
-        upload_to='memory_images/',
-        storage=MediaCloudinaryStorage(resource_type='image'),
-        blank=True,
-        null=True,
+    image = CloudinaryField(
+        'memory_image',
+        upload_preset='memory_photo',
+        blank=True, null=True
     )
-    video = models.FileField(
-        upload_to='memory_videos/',
-        storage=MediaCloudinaryStorage(resource_type='video'),
-        blank=True,
-        null=True,
+    video = CloudinaryField(
+        'memory_video',
+        resource_type='video',
+        blank=True, null=True
     )
-    audio = models.FileField(
-        upload_to='memory_audio/',
-        storage=MediaCloudinaryStorage(resource_type='raw'),
-        blank=True,
-        null=True,
+    audio = CloudinaryField(
+        'memory_audio',
+        resource_type='audio',
+        blank=True, null=True
     )
     created_at = models.DateTimeField(auto_now_add=True)
     likes = models.ManyToManyField(User, related_name='liked_memories', blank=True)
@@ -68,9 +66,8 @@ class Comment(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(blank=True, null=True)
-    profile_picture = models.ImageField(
-        upload_to='profile_pictures/',
-        storage=MediaCloudinaryStorage(), 
+    profile_picture = CloudinaryField(
+        'profile_picture',
         blank=True,
         null=True,
     )
