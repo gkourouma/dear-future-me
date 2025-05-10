@@ -1,22 +1,29 @@
-{% extends "base.html" %} {% load static %} {% block title %}Memory
-Lane{%endblock %} {% block head %}
+{% extends "base.html" %} 
+{% load static cloudinary %}
+{% block title %}MemoryLane{%endblock %} 
+{% block head %}
 <link rel="stylesheet" href="{% static 'css/base.css' %}" />
 <link rel="stylesheet" href="{% static 'css/profile.css' %}" />
 <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
-{% endblock %} {% block content %}
+{% endblock %} 
+{% block content %}
 <section class="profile-container">
     
     <div class="profile-card">
         <section class="hero">
-            {% if profile.profile_picture %}
-            <img class="profile-pic" src="{{ profile.profile_picture.url }}" alt="Profile Picture" />
-            {% else %}
-            <img
+          {% if profile.profile_picture %}
+          <img
             class="profile-pic"
-            src="{% static './media/9a3ff43544fd8b6338d4cd5fd0e49315.png' %}"
+            src="{% cloudinary_url profile.profile_picture width=300 height=300 crop='thumb' fetch_format='auto' quality='auto:best' %}"
+            alt="{{ user.username }}’s avatar"
+          />
+        {% else %}
+          <img
+            class="profile-pic"
+            src="{% static 'media/default-avatar.png' %}"
             alt="Default Profile Picture"
-            />
-            {% endif %}
+          />
+        {% endif %}
             <h1>{{user.username}}</h1>
             <p class="join-date">
                 <strong>Member Since:</strong> {{ join_date|date:"F j, Y" }}
@@ -38,9 +45,15 @@ Lane{%endblock %} {% block head %}
       <div class="activity-card">
         <div class="media-wrapper">
           {% if memory.image %}
-            <img src="{{ memory.image.url }}" alt="{{ memory.title }}">
-          {% elif memory.video %}
-            <video src="{{ memory.video.url }}" muted autoplay loop></video>
+        <img
+          src="{% cloudinary_url memory.image width=700 height=700 crop='fill' fetch_format='auto' quality='auto:best' dpr='auto' %}"
+          alt="{{ memory.title }}"
+        />
+        {% elif memory.video %}
+        <video
+          src="{% cloudinary_url memory.video resource_type='video' width=600 crop='limit' video_codec='auto' fetch_form='auto' quality='auto' %}"
+          muted autoplay loop
+        ></video>
           {% elif memory.audio %}
             <audio controls>
               <source src="{{ memory.audio.url }}">
