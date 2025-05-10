@@ -1,17 +1,19 @@
 {% extends "base.html" %} 
 {% load static cloudinary %}
 {% block title %}MemoryLane{%endblock %} 
+
 {% block head %}
 <link rel="stylesheet" href="{% static 'css/base.css' %}" />
 <link rel="stylesheet" href="{% static 'css/profile.css' %}" />
 <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
 {% endblock %} 
+
 {% block content %}
-<section class="profile-container">
-    
+  <section class="profile-container">
+      
     <div class="profile-card">
-        <section class="hero">
-          {% if profile.profile_picture %}
+      <section class="hero">
+        {% if profile.profile_picture %}
           <img
             class="profile-pic"
             src="{% cloudinary_url profile.profile_picture width=300 height=300 crop='thumb' fetch_format='auto' quality='auto:best' %}"
@@ -24,51 +26,63 @@
             alt="Default Profile Picture"
           />
         {% endif %}
-            <h1>{{user.username}}</h1>
-            <p class="join-date">
-                <strong>Member Since:</strong> {{ join_date|date:"F j, Y" }}
-            </p>
-            {% if profile_owner%}
-            <button class="edit-btn">Edit Profile</button>
-            {%endif%}
-        </section>
+        <h1>{{user.username}}</h1>
+        <p class="join-date">
+          <strong>Member Since:</strong> {{ join_date|date:"F j, Y" }}
+        </p>
+        {% if profile_owner%}
+          <button class="edit-btn">Edit Profile</button>
+        {%endif%}
+      </section>
 
-    <p>{{ profile.bio }}</p>
-    <div><strong>Albums:</strong> {{ total_capsules }}</div>
-    <a href="{% url 'user_capsules' user.id %}">View Albums</a>
-    <div><strong>Memories:</strong> {{ total_memories }}</div>
-  </div>
-
-  <h2>Recent Activities</h2>
-  <div class="recent-activities">
-    {% for memory in recent_activities %}
-      <div class="activity-card">
-        <div class="media-wrapper">
-          {% if memory.image %}
-        <img
-          src="{% cloudinary_url memory.image width=700 height=700 crop='fill' fetch_format='auto' quality='auto:best' dpr='auto' %}"
-          alt="{{ memory.title }}"
-        />
-        {% elif memory.video %}
-        <video
-          src="{% cloudinary_url memory.video resource_type='video' width=600 crop='limit' video_codec='auto' fetch_form='auto' quality='auto' %}"
-          muted autoplay loop
-        ></video>
-          {% elif memory.audio %}
-            <audio controls>
-              <source src="{{ memory.audio.url }}">
-            </audio>
+      <p>{{ profile.bio|default:'No bio yet.' }}</p>
+      <div class="album-count">
+        <strong>Albums:</strong> <span>{{ total_capsules }}</span>
+        <form method="POST" action="{% url 'toggle_follow' user.username %}">
+          {% csrf_token %}
+          {% if user.profile in request.user.profile.following.all %}
+            <button type="submit" class="btn">Unfollow</button>
+          {% else %}
+            <button type="submit" class="btn primary">Follow</button>
           {% endif %}
-        </div>
-        <div class="activity-info">
-          <h4>{{ memory.title }}</h4>
-          <p>By {{ memory.user.username }}</p>
-          <p class="date">{{ memory.created_at|date:"F j, Y" }}</p>
-        </div>
+        </form>
       </div>
-    {% endfor %}
-  </div>
-  
-</section>
+      <div class="memory-count">
+        <strong>Memories:</strong> <span>{{ total_memories }}</span>
+        <a class='btn' href="{% url 'user_capsules' user.id %}">View Albums</a>
+      </div>
+    </div>
+
+    <h2>Recent Memories</h2>
+    <div class="recent-activities">
+      {% for memory in recent_activities %}
+        <div class="activity-card">
+          <div class="media-wrapper">
+            {% if memory.image %}
+              <img
+                src="{% cloudinary_url memory.image width=700 height=700 crop='fill' fetch_format='auto' quality='auto:best' dpr='auto' %}"
+                alt="{{ memory.title }}"
+              />
+            {% elif memory.video %}
+              <video
+                src="{% cloudinary_url memory.video resource_type='video' width=600 crop='limit' video_codec='auto' fetch_form='auto' quality='auto' %}"
+                muted autoplay loop
+              ></video>
+            {% elif memory.audio %}
+              <audio controls>
+                <source src="{{ memory.audio.url }}">
+              </audio>
+            {% endif %}
+          </div>
+          <div class="activity-info">
+            <h4>{{ memory.title }}</h4>
+            <p>By {{ memory.user.username }}</p>
+            <p class="date">{{ memory.created_at|date:"F j, Y" }}</p>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    
+  </section>
 
 {% endblock %}
