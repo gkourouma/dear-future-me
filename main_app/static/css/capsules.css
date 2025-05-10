@@ -35,6 +35,8 @@
 }
 
 .capsule-card {
+  width: 35.688rem;
+  height: 34.715rem;
   background: #fff;
   border-radius: 12px;
   overflow: hidden;
@@ -46,10 +48,14 @@
   transform: scale(1.03) rotate(1deg);
   box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
 }
-  
+
+.polaroid-frame{
+  width: 35.688rem;
+  height: 27.016rem; ;
+}
+ 
 .capsule-card img {
   width: 100%;
-  height: 75%;
   object-fit: cover;
 }
 
