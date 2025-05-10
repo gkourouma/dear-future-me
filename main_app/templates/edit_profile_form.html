@@ -2,82 +2,80 @@
 {% load static cloudinary %}
 {% load avatar_tags %}
 
-
 {% block head %}
   <link rel="stylesheet" href="{% static 'css/base.css' %}">
   <link rel="stylesheet" href="{% static 'css/profile.css' %}">
-  <link rel="stylesheet" href="{% static 'css/edit_profile_form.css' %}">
 {% endblock %}
 
 {% block content %}
-<div class="profile-edit-wrapper">
-  <h2>Edit Your Profile</h2>
-  <form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
+  <div class="profile-edit-wrapper">
+    <h2>Edit Your Profile</h2>
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
 
-    <div class="form-group">
-      {{ form.bio.label_tag }}
-      {{ form.bio }}
-    </div>
+      <div class="form-group">
+        {{ form.bio.label_tag }}
+        {{ form.bio }}
+      </div>
 
-    <div class="form-group">
-      <label for="avatar-upload">Profile Picture</label>
-      <input
-        type="file"
-        id="avatar-upload"
-        name="profile_picture"
-        accept="image/*"
-      />
+      <div class="form-group">
+        <label for="avatar-upload">Profile Picture</label>
+        <input
+          type="file"
+          id="avatar-upload"
+          name="profile_picture"
+          accept="image/*"
+        />
 
-      <script>
-        document.getElementById("avatar-upload").addEventListener("change", async (e) => {
-          const file = e.target.files[0];
-          if (!file) return;
-        
-          const formData = new FormData();
-          formData.append("file", file);
-          formData.append("upload_preset", "social_avatars");
-        
-          // 🔑 Use the /image/upload endpoint for unsigned photo uploads
-          const cloudRes = await fetch(
-            "https://api.cloudinary.com/v1_1/dvcf7djwv/image/upload",
-            { method: "POST", body: formData }
-          );
-          const data = await cloudRes.json();
-          if (data.error) {
-            console.error("Cloudinary upload failed:", data.error);
-            return;
-          }
-        
-          // Save the returned public_id
-          await fetch("{% url 'save_avatar' %}", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "X-CSRFToken": "{{ csrf_token }}",
-            },
-            body: JSON.stringify({ public_id: data.public_id }),
+        <script>
+          document.getElementById("avatar-upload").addEventListener("change", async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+          
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("upload_preset", "social_avatars");
+          
+            // Use the /image/upload endpoint for unsigned photo uploads
+            const cloudRes = await fetch(
+              "https://api.cloudinary.com/v1_1/dvcf7djwv/image/upload",
+              { method: "POST", body: formData }
+            );
+            const data = await cloudRes.json();
+            if (data.error) {
+              console.error("Cloudinary upload failed:", data.error);
+              return;
+            }
+          
+            // Save the returned public_id
+            await fetch("{% url 'save_avatar' %}", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": "{{ csrf_token }}",
+              },
+              body: JSON.stringify({ public_id: data.public_id }),
+            });
+          
+            // Update the on-page preview
+            document.getElementById("profilePreview").src = data.secure_url;
           });
-        
-          // Update the on-page preview
-          document.getElementById("profilePreview").src = data.secure_url;
-        });
         </script>       
-    </div>
+      </div>
 
-    <div class="preview-container">
-      <img
-        id="profilePreview"
-        class="profile-pic"
-        src="{% avatar_preview request.user 150 %}"
-        alt="Profile Picture Preview"
-      />
-    </div>
+      <div class="preview-container">
+        <img
+          id="profilePreview"
+          class="profile-pic"
+          src="{% avatar_preview request.user 150 %}"
+          alt="Profile Picture Preview"
+        />
+      </div>
 
-    <div class="buttons">
-      <button type="submit" class="btn save-btn">Save Changes</button>
-      <a href="{% url 'profile' %}" class="btn cancel-btn">Cancel</a>
-    </div>
-  </form>
-</div>
+      <div class="buttons">
+        <button type="submit" class="btn save-btn">Save Changes</button>
+        <a href="{% url 'profile' %}" class="btn cancel-btn">Cancel</a>
+      </div>
+    </form>
+  </div>
 {% endblock %}
