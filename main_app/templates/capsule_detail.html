@@ -1,6 +1,5 @@
 {% extends "base.html" %}
-{% load static %}
-
+{% load static cloudinary %}
 {% block head %}
   <link rel="stylesheet" href="{% static 'css/base.css' %}">
   <link rel="stylesheet" href="{% static 'css/capsule_detail.css' %}">
@@ -12,19 +11,19 @@
         <h1 class="animated-text">{{ capsule.title }}</h1>
         <p class="description">Memories from {{ capsule.title }}!</p>
         <p class="open-date">Open Date: {{ capsule.open_date|date:"F j, Y" }}</p>
-    
+
         {% if request.user == capsule.user %}
         <a href="{% url 'memory_form' capsule.id %}" class="btn">Add Memory</a>
         <a href="{% url 'capsule_edit' capsule.id %}" class="btn">Edit Album</a>
         <button class="btn delete-btn" onclick="openModal({{ capsule.id }})">Delete Album</button>
         {% endif %}
     </div>
-    
-      <div id="modal-{{ capsule.id }}" class="modal hidden">
+
+    <div id="modal-{{ capsule.id }}" class="modal hidden">
         <div class="modal-content">
           <h3>Delete Album?</h3>
           <p>Are you sure you want to delete "<strong>{{ capsule.title }}</strong>"?</p>
-          
+
           <form method="POST" action="{% url 'capsule_delete' capsule.id %}">
             {% csrf_token %}
             <button type="submit" class="btn danger">Yes, delete it</button>
@@ -32,28 +31,38 @@
           </form>
         </div>
     </div>
-  
+
     <div class="wrapper">
         {% for memory in memories %}
-        <div class="item item-{{ forloop.counter }}">
-            <a href ="{% url 'memory_detail' memory.id %}">
+        <div class="item item-{{ forloop.counter }} fade-in">
+            <a href="{% url 'memory_detail' memory.id %}">
                 <div class="polaroid">
-        
+
                 {% if memory.image %}
-                    <img src="{{ memory.image.url }}" alt="{{ memory.caption }}">
+                    <img
+                      src="{% cloudinary_url memory.image crop='fit' fetch_format='auto' quality='auto:best' dpr='auto' %}"
+                      alt="{{ memory.caption }}"
+                      class="polaroid-img"
+                    />
                 {% elif memory.video %}
-                    <video src="{{ memory.video.url }}" autoplay loop muted></video>
+                    <video
+                      controls
+                      autoplay loop muted
+                      class="polaroid-video"
+                      src="{% cloudinary_url memory.video resource_type='video' height=620 crop='limit' video_codec='auto' fetch_format='auto' quality='auto' %}"
+                    ></video>
                 {% elif memory.audio %}
-                    <audio controls>
-                    <source src="{{ memory.audio.url }}">
-                    Your browser does not support the audio element.
+                    <audio controls class="polaroid-audio">
+                      {% cloudinary_url memory.audio resource_type='video' format='mp3' audio_codec='aac' audio_bitrate='64k' as audio_url %}
+                      <source src="{{ audio_url }}" type="audio/mpeg">
+                      Your browser does not support the audio element.
                     </audio>
                 {% else %}
-                    <img src="{% static 'media/blankpolaroid.png' %}" alt="Blank Memory">
+                    <img src="{% static 'media/blankpolaroid.png' %}" alt="Blank Memory" class="polaroid-img">
                 {% endif %}
-        
+
                 <div class="caption">{{ memory.title }}</div>
-                <p>Date: {{ memory.created_at|date:"F j, Y" }}</p>
+                <p class="memory-date">{{ memory.created_at|date:"F j, Y" }}</p>
                 </div>
             </a>
         </div>
@@ -61,7 +70,7 @@
         <p>No memories yet. Start by adding your first one!</p>
         {% endfor %}
     </div>
-  
+
     <div class="back-button">
         <a href="{% url 'capsules' %}" class="btn">Back to Album</a>
     </div>
@@ -69,12 +78,10 @@
 
 <script>
 function openModal(id) {
-    console.log('Opening modal for capsule ID:', id);
     document.getElementById(`modal-${id}`).classList.remove('hidden');
 }
 
 function closeModal(id) {
-    console.log('Closing modal for capsule ID:', id);
     document.getElementById(`modal-${id}`).classList.add('hidden');
 }
 </script>
