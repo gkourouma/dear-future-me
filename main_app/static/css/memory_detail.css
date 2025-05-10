@@ -80,6 +80,12 @@ a.comment-btn, .like-wrapper, a.like-wrapper, .like-wrapper img, button {
   cursor: pointer;
 }
 
+.like-count {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-left: .5rem;
+}
+
 .comment-btn img, .like-wrapper img {
   width: 24px;
   height: 24px;
